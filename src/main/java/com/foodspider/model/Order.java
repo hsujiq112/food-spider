@@ -8,11 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orderuru")
-public class Order {
-
-    @Id
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID orderID;
+public class Order extends BaseModel{
 
     @Column(nullable = false)
     private OrderStatusEnum orderStatus;
@@ -21,12 +17,11 @@ public class Order {
     @JoinColumn(name = "customerID")
     private Customer customer;
 
-    @OneToMany(mappedBy = "order")
-    private List<FoodItem> foodItem;
-
-    public UUID getOrderID() {
-        return orderID;
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "food_item_order",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_item_id"))
+    private List<FoodItem> foodItems;
 
     public OrderStatusEnum getOrderStatus() {
         return orderStatus;
@@ -36,14 +31,14 @@ public class Order {
         return customer;
     }
 
-    public List<FoodItem> getFoodItem() {
-        return foodItem;
+    public List<FoodItem> getFoodItems() {
+        return foodItems;
     }
 
     public Order(OrderStatusEnum orderStatus, List<FoodItem> foodItem) {
-        this.orderID = UUID.randomUUID();
+        this.setId(UUID.randomUUID());
         this.orderStatus = orderStatus;
-        this.foodItem = foodItem;
+        this.foodItems = foodItem;
     }
 
     public Order() {

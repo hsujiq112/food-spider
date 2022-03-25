@@ -3,6 +3,7 @@ package com.foodspider.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,9 +29,12 @@ public class FoodItem {
     @Column
     private String imageLink;
 
+    @ManyToMany(mappedBy = "foodItems")
+    private List<Order> orders;
+
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "restaurantID")
+    private Restaurant restaurant;
 
     public UUID getFoodItemID() {
         return foodItemID;
@@ -56,7 +60,7 @@ public class FoodItem {
         return imageLink;
     }
 
-    public Order getOrder() {
-        return order;
+    public List<Order> getOrder() {
+        return orders;
     }
 }
