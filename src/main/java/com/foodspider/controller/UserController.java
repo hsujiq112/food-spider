@@ -1,8 +1,9 @@
 package com.foodspider.controller;
 
-import com.foodspider.model.User;
-import com.foodspider.service.UserService;
+import com.foodspider.model.UserBase;
+import com.foodspider.service.UserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,11 +15,12 @@ import java.util.UUID;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    @Qualifier("userService")
+    private UserBaseService userService;
 
     @GetMapping("/users")
     public ResponseEntity<Object> get() {
-        var users = new ArrayList<User>();
+        var users = new ArrayList<UserBase>();
         try {
              users = userService.dbSet();
         } catch (Exception ex) {
