@@ -1,17 +1,11 @@
 package com.foodspider.model;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant")
-public class Restaurant {
-
-    @Id
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID restaurantID;
+public class Restaurant extends BaseModel {
 
     @Column(nullable = false)
     private String name;
@@ -26,9 +20,8 @@ public class Restaurant {
     @JoinColumn(name = "administratorID")
     private Administrator administrator;
 
-    public UUID getRestaurantID() {
-        return restaurantID;
-    }
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    private List<FoodItem> foodItems;
 
     public String getName() {
         return name;
