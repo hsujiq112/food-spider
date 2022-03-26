@@ -8,11 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "food_item")
-public class FoodItem {
-
-    @Id
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID foodItemID;
+public class FoodItem extends BaseModel {
 
     @Column
     private String name;
@@ -35,10 +31,6 @@ public class FoodItem {
     @ManyToOne
     @JoinColumn(name = "restaurantID")
     private Restaurant restaurant;
-
-    public UUID getFoodItemID() {
-        return foodItemID;
-    }
 
     public String getName() {
         return name;

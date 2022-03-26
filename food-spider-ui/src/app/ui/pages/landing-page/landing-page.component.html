@@ -1,0 +1,31 @@
+<div class="container dark-background">
+
+    <div class="account-button button">
+        <button mat-mini-fab flat class="fab primary" (click)="openLoginPage()">
+          <mat-icon>person</mat-icon>
+        </button>
+    </div>
+
+    <div class="grid-item">
+        <img src="../../../../assets/spooder.png" alt="FS logo" class="landing-logo">
+    </div>
+
+    <div *ngIf="!isAdmin; else adminText" class="text">
+        Welcome to Food Spider!
+    </div>
+
+    <ng-template #adminText>
+        <div class="text">
+            Welcome to Food Spider! (Admin Mode)
+        </div>
+    </ng-template>
+
+    <div class="button-wrapper">
+        <button mat-flat-button [disabled]="!loggedIn" class="landing-button primary" routerLink="/book-page">{{restaurants}}</button>
+        <button mat-flat-button [disabled]="!loggedIn" class="landing-button primary" routerLink="/course-page">{{orders}}</button>
+        <div [hidden]="!isAdmin">
+            
+        </div>
+    </div>
+
+</div>

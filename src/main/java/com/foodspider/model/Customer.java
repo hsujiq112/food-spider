@@ -17,7 +17,6 @@ public class Customer extends UserBase {
     public Customer(String emailAddress, String firstName, String lastName, String username, String password) throws Exception {
         super(emailAddress, firstName, lastName, username, password);
         orders = new ArrayList<>();
-
     }
 
     public Customer() {
