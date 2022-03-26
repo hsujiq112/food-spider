@@ -76,3 +76,9 @@ buildNumber.properties
 /.mvn/wrapper/maven-wrapper.properties
 /mvnw
 /mvnw.cmd
+
+# Node Modules
+/food-spider-ui/node_modules
+food-spider-ui/.DS_Store
+.DS_Store
+food-spider-ui/package-lock.json

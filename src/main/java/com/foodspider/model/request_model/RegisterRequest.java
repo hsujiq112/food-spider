@@ -6,4 +6,5 @@ public class RegisterRequest extends RequestBase {
     public String username;
     public String password;
     public String emailAddress;
+    public Boolean isAdmin;
 }

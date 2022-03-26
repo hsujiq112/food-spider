@@ -1,0 +1,110 @@
+<mat-progress-bar *ngIf="!loggedIn" mode="indeterminate" class="bar" color="secondary"></mat-progress-bar>
+
+<div class="info-container container slightly-dark-background">
+    <div class="sheet-wrapper">
+
+        <mat-card class="user-card">
+            <div class="header-wrapper">
+                <mat-card-header>       
+                    <img mat-card-avatar src={{localUser.userAvatar}}>
+                    <mat-card-title>{{ localUser.username }}</mat-card-title>
+                    <mat-card-subtitle>{{ localUser.userType | titlecase}} User</mat-card-subtitle>
+                    <span class="separator"></span>
+                </mat-card-header>
+                <button mat-button (click)="clickDismiss()">
+                    <span class="material-icons"> close </span>
+                </button>
+            </div>
+
+            <mat-card-content *ngIf="localUser.isLoggedIn" class="card-content">
+                <span>{{ordersCountText}}</span>
+                <mat-divider vertical></mat-divider>
+                <span>{{ordersPendingText}}</span>
+            </mat-card-content>
+            <mat-card-actions *ngIf="localUser.isLoggedIn">
+                <button mat-button class="red-text" fxFlexAlign="end" (click)="signOut()">Sign Out</button>
+            </mat-card-actions>
+
+        </mat-card>
+
+
+        <div class="bottom-wrapper" *ngIf="!localUser.isLoggedIn">
+            <form [formGroup]="loginForm" *ngIf="!isRegisterToggled">
+                <mat-form-field>
+                    <mat-label for="username">
+                      Username
+                    </mat-label>
+                    <input matInput placeholder="username" id="username" type="text" formControlName="username">
+                    <mat-error>Required Field</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <mat-label for="password">
+                        Password
+                    </mat-label>
+                    <input matInput placeholder="password" id="password" type="password" formControlName="password" autocomplete="on">
+                    <mat-error>Required Field</mat-error>
+                </mat-form-field>
+            </form>
+            <form [formGroup]="registerForm" *ngIf="isRegisterToggled">
+                <mat-form-field>
+                    <mat-label for="firstName">
+                      First Name
+                    </mat-label>
+                    <input matInput placeholder="Lirst Name" id="firstName" type="text" formControlName="firstName">
+                    <mat-error>Required Field</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label for="lastName">
+                      Last Name
+                    </mat-label>
+                    <input matInput placeholder="Last Name" id="lastName" type="text" formControlName="lastName">
+                    <mat-error>Required Field</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label for="email">
+                      E-Mail
+                    </mat-label>
+                    <input matInput placeholder="e-mail" id="email" type="text" formControlName="email">
+                    <mat-error>Invalid E-Mail</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label for="username">
+                      Username
+                    </mat-label>
+                    <input matInput placeholder="username" id="username" type="text" formControlName="username">
+                    <mat-error>Required Field</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field>
+                    <mat-label for="password">
+                        Password
+                    </mat-label>
+                    <input matInput placeholder="password" id="password" type="password" formControlName="password" autocomplete="on">
+                    <mat-error>Required Field</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label for="confirmPass">
+                        Confirm Password
+                    </mat-label>
+                    <input matInput placeholder="confirm password" id="confirmPass" type="password" formControlName="confirmPass" autocomplete="on">
+                    <mat-error>Must match password</mat-error>
+                </mat-form-field>
+            </form>
+            <br>
+            <div class="button-wrapper">
+                <button mat-flat-button [ngClass]="{'error-button' : ((isRegisterToggled && !registerForm.valid) || (!isRegisterToggled && !loginForm.valid))}" color="primary" class="landing-button" routerLink="/" (click)="onSubmit()">{{buttonText}}</button>
+                <button mat-flat-button color="primary" class="landing-button" (click)="toggleRegister()">{{toggleText}}</button>
+            </div>
+        </div>
+        
+        <div class="logged-wrapper" *ngIf="localUser.isLoggedIn">
+            
+        </div>
+
+    </div>
+</div>
