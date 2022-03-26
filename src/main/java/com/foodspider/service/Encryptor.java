@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Encryptor {
 
     public static String encrypt(UUID id, String string) throws Exception{
-        var arrayBytes = id.toString().getBytes(StandardCharsets.UTF_8);
+        var arrayBytes = (id.toString() + "secret discret").getBytes(StandardCharsets.UTF_8);
         var ks = new DESedeKeySpec(arrayBytes);
         var skf = SecretKeyFactory.getInstance("DESede");
         var cipher = Cipher.getInstance("DESede");
@@ -25,7 +25,7 @@ public class Encryptor {
     }
 
     public static String decrypt(UUID id, String string) throws Exception {
-        var arrayBytes = id.toString().getBytes(StandardCharsets.UTF_8);
+        var arrayBytes = (id.toString() + "secret discret").getBytes(StandardCharsets.UTF_8);
         var ks = new DESedeKeySpec(arrayBytes);
         var skf = SecretKeyFactory.getInstance("DESede");
         var cipher = Cipher.getInstance("DESede");
