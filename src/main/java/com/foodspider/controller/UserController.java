@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
+// used mainly for testing... no real use-case found for web app
 @RestController
 public class UserController {
 

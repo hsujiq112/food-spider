@@ -13,21 +13,18 @@ import java.util.Optional;
 public class UserBaseService extends ServiceBase<UserBase> {
 
     public Optional<UserBase> findByUsername(String username) {
-        var test = getRepo().findAll();
         return getRepo().findAll().stream()
                 .filter(i -> i.getUsername().equals(username)).findFirst();
     }
 
     public UserBase tryLogin(String username, String password) throws InvalidUserException, Exception {
-        var user = findByUsername(username);
-        if (user.isEmpty()) {
-            throw new InvalidUserException("Username or Password is incorrect");
-        }
-        var passwordDecrypted = Encryptor.decrypt(user.get().getId(), user.get().getPassword());
+        var user = findByUsername(username)
+                .orElseThrow(() -> new InvalidUserException("Username or Password is incorrect"));
+        var passwordDecrypted = Encryptor.decrypt(user.getId(), user.getPassword());
         if (!password.equals(passwordDecrypted)) {
             throw new InvalidUserException("Username or Password is incorrect");
         }
-        return user.get();
+        return user;
     }
 
     public UserBase tryRegister(String emailAddress, String firstName, String lastName,

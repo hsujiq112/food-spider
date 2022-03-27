@@ -11,7 +11,7 @@ import { LoginRequest, RegisterRequest } from './request-base';
 })
 
 export class SharedService {
-  readonly APIUrl = "http://localhost:8080/api";
+  readonly APIUrl = "http://localhost:8080/api/v1";
   
   isLoggedIn: boolean = false;
   user: UserModel;

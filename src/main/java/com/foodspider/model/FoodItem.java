@@ -1,12 +1,13 @@
 package com.foodspider.model;
 
-import org.hibernate.annotations.Type;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Getter
 @Table(name = "food_item")
 public class FoodItem extends BaseModel {
 
@@ -32,27 +33,16 @@ public class FoodItem extends BaseModel {
     @JoinColumn(name = "restaurantID")
     private Restaurant restaurant;
 
-    public String getName() {
-        return name;
+    public FoodItem(String name, String description, Double price, CategoryEnum category, String imageLink) {
+        setId(UUID.randomUUID());
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.category = category;
+        this.imageLink = imageLink;
     }
 
-    public String getDescription() {
-        return description;
-    }
+    public FoodItem() {
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public CategoryEnum getCategory() {
-        return category;
-    }
-
-    public String getImageLink() {
-        return imageLink;
-    }
-
-    public List<Order> getOrder() {
-        return orders;
     }
 }
