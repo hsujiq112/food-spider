@@ -1,14 +1,13 @@
 package com.foodspider.model;
 
-import org.hibernate.annotations.Type;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
-@Table(name = "customer")
+@Getter
 public class Customer extends UserBase {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
@@ -22,10 +21,5 @@ public class Customer extends UserBase {
     public Customer() {
 
     }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
 
 }

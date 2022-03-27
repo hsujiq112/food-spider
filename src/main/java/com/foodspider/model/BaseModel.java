@@ -1,11 +1,15 @@
 package com.foodspider.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.util.UUID;
 
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class BaseModel {
 
@@ -13,11 +17,4 @@ public abstract class BaseModel {
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID id;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 }

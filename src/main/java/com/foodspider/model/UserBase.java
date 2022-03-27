@@ -1,14 +1,15 @@
 package com.foodspider.model;
 
 import com.foodspider.service.Encryptor;
-import org.hibernate.annotations.Type;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Getter
 @Table(name = "user_base")
-public class UserBase extends BaseModel{
+public class UserBase extends BaseModel {
 
     @Column(nullable = false)
     private String emailAddress;
@@ -45,26 +46,6 @@ public class UserBase extends BaseModel{
 
     public UserBase() {
 
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
 }
