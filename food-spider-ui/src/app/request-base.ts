@@ -27,3 +27,18 @@ export class RegisterRequest {
     public emailAddress: string;
     public isAdmin: boolean;
 }
+
+export class AddRestaurantRequest {
+
+    constructor() {
+        this.adminID = '';
+        this.name = '';
+        this.location = '';
+        this.deliveryZones = '';
+    }
+
+    public adminID: string;
+    public name: string;
+    public location: string;
+    public deliveryZones: string;
+}

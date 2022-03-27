@@ -1,4 +1,4 @@
-import { UserModel } from "./api-model";
+import { NarrowedFoodItem, UserModel } from "./api-model";
 
 export class ResponseBase {
     constructor() {
@@ -19,4 +19,13 @@ export class LoginResponse extends ResponseBase {
 
     public userBase: UserModel;
     public isAdmin: boolean;
+}
+
+export class MenuItemsResponse extends ResponseBase {
+    constructor() {
+        super();
+        this.foodItems = new Array<NarrowedFoodItem>();
+    }
+
+    public foodItems: Array<NarrowedFoodItem>;
 }

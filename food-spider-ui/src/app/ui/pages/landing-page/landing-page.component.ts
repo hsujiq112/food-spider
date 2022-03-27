@@ -24,6 +24,14 @@ export class LandingPageComponent implements OnInit {
   get orders(): string {
     return !this.isAdmin ? "Get My Orders" : "Inspect Orders";
   }
+
+  get restaurantRoute(): string {
+    return !this.isAdmin ? "/all-restaurants-page" : "/my-restaurant-page";
+  }
+
+  get ordersRoute(): string {
+    return !this.isAdmin ? "/my-orders-page" : "/restaurant-orders-page";
+  }
   
   get loggedIn(): boolean {
     return this.service.isLoggedIn;

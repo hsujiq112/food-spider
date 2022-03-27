@@ -21,8 +21,8 @@
     </ng-template>
 
     <div class="button-wrapper">
-        <button mat-flat-button [disabled]="!loggedIn" class="landing-button primary" routerLink="/book-page">{{restaurants}}</button>
-        <button mat-flat-button [disabled]="!loggedIn" class="landing-button primary" routerLink="/course-page">{{orders}}</button>
+        <button mat-flat-button [disabled]="!loggedIn" class="landing-button primary" routerLink="{{restaurantRoute}}">{{restaurants}}</button>
+        <button mat-flat-button [disabled]="!loggedIn" class="landing-button primary" routerLink="{{ordersRoute}}">{{orders}}</button>
         <div [hidden]="!isAdmin">
             
         </div>

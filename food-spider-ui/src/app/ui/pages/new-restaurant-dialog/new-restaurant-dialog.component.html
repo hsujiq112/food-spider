@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Oh no! It seems like you don't have a restaurant!</h2>
+<h3 mat-dialog-title>Let's create it for you!</h3>
+<form [formGroup]="restaurantForm" class="form-wrapper">
+    
+    <mat-form-field>
+        <mat-label for="restaurantName">
+            Restaurant Name
+        </mat-label>
+        <input matInput placeholder="Restaurant Name" id="restaurantName" type="text" formControlName="restaurantName">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label for="restaurantLocation">
+            Restaurant Location
+        </mat-label>
+        <input matInput placeholder="Restaurant Location" id="restaurantLocation" type="text" formControlName="restaurantLocation">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label for="restaurantDeliveryZones">
+            Restaurant Delivery Zones
+        </mat-label>
+        <input matInput placeholder="Restaurant Delivery Zones" id="restaurantDeliveryZones" type="text" formControlName="restaurantDeliveryZones">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+
+</form>
+
+<mat-dialog-actions class="space-between">
+    <button mat-raised-button [ngClass]="{'red-button': !this.restaurantForm.valid}" (click)="save()">Save</button>
+    <button mat-raised-button (click)="close()">Close</button>
+</mat-dialog-actions>
