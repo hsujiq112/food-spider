@@ -1,0 +1,9 @@
+.flex-center {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.padding-left {
+    padding-left: 10px;
+}

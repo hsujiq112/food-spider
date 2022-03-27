@@ -1,0 +1,7 @@
+.space-between {
+    justify-content: space-between;
+}
+
+.red-button {
+    background: rgb(202, 162, 162);
+}

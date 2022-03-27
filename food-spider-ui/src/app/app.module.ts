@@ -22,13 +22,17 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatCheckboxModule } from '@angular/material/checkbox'
-import { YouTubePlayerModule } from '@angular/youtube-player';
+import { MyRestaurantComponent } from './ui/pages/my-restaurant-page/my-restaurant-page.component';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { NewRestaurantDialogComponent } from './ui/pages/new-restaurant-dialog/new-restaurant-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    LoginPageComponent
+    LoginPageComponent,
+    MyRestaurantComponent,
+    NewRestaurantDialogComponent
   ],
   imports: [
     MaterialModule,
@@ -48,7 +52,8 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
     MatBadgeModule,
     MatDialogModule,
     MatMenuModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    BrowserAnimationsModule
   ],
   providers: [
     SharedService,
@@ -57,3 +62,5 @@ import { YouTubePlayerModule } from '@angular/youtube-player';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule);

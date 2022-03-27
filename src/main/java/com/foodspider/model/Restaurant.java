@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "restaurant")
 public class Restaurant extends BaseModel {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
