@@ -1,30 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Inject, Injectable, Input, OnChanges, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { SharedService } from 'src/app/shared.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { AddFoodItemRequest, AddRestaurantRequest } from 'src/app/request-base';
+import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AddFoodItemRequest, AddOrderRequest, AddRestaurantRequest } from 'src/app/request-base';
 import { NewRestaurantDialogComponent } from '../new-restaurant-dialog/new-restaurant-dialog.component';
-import { CategoryEnum, NarrowedFoodItem } from 'src/app/api-model';
+import { CategoryEnum, DisplayEmitter, DisplayTypeEnum, NarrowedFoodItem } from 'src/app/api-model';
 import { NewFoodItemDialogComponent } from '../new-food-item-dialog/new-food-item-dialog.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { initializeLinq, IEnumerable, from } from 'linq-to-typescript';
+import { NewOrderDialogComponent } from '../new-order-dialog/new-order-dialog.component';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 @Component({
-  selector: 'my-restaurant-page',
-  templateUrl: './my-restaurant-page.component.html',
-  styleUrls: ['./my-restaurant-page.component.css']
+  selector: 'restaurant-page',
+  templateUrl: './restaurant-page.component.html',
+  styleUrls: ['./restaurant-page.component.css']
 })
-export class MyRestaurantComponent implements OnInit {
+@Injectable()
+export class MyRestaurantComponent implements OnInit, OnChanges {
 
   constructor(
-    private _bottomSheet: MatBottomSheet,
     private service: SharedService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   tableSource: Array<NarrowedFoodItem>;
   categoriesToShow: Array<number>;
+  restaurantID: string;
+  potentialOrderFoodItems: Array<NarrowedFoodItem> = new Array<NarrowedFoodItem>();
+  @Input() displayType: DisplayEmitter;
+  @Output() buttonPressed = new EventEmitter<MouseEvent>();
+
   get categoriesToShowText(): Array<string> {
     var categoriesText: Array<string> = [];
     this.categoriesToShow?.forEach(i => {
@@ -61,6 +69,29 @@ export class MyRestaurantComponent implements OnInit {
 
   ngOnInit(): void {
     initializeLinq();
+    if (!!this.route.snapshot.data && this.route.snapshot.data.displayType == DisplayTypeEnum.ADMIN) {
+      this.initAdmin();
+    }
+  }
+
+  ngOnChanges(): void {
+    if (!this.displayType) {
+      return;
+    }
+    switch(this.displayType.displayType) {
+      case DisplayTypeEnum.ADMIN:
+        this.initAdmin();
+        break;
+      case DisplayTypeEnum.VIEW:
+        this.initView();
+        break;
+      case DisplayTypeEnum.ORDER:
+        this.initOrder();
+        break;
+    }
+  }
+
+  initAdmin() {
     if (!this.service.user || !this.service.isAdmin) {
       this.service.openSnackBar("You shouldn't be here!", "Sorry");
       setTimeout(() => this.router.navigate(['/landing-page']), 1000);
@@ -74,7 +105,8 @@ export class MyRestaurantComponent implements OnInit {
           return;
         }
         this.service.user.restaurant = response.body?.narrowedRestaurant;
-        this.getRestaurantMenu(this.service.user.restaurant.id);
+        this.restaurantID = this.service.user.restaurant.id;
+        this.getRestaurantMenu();
       }
     }, responseError => {
       if (responseError.error.isError && !!responseError.error.errorMessage) {
@@ -87,12 +119,32 @@ export class MyRestaurantComponent implements OnInit {
     });
   }
 
-  getRestaurantMenu(restaurantID: string) {
-    if (restaurantID == '') {
+  initView() {
+    if (!this.service.user || this.service.isAdmin) {
+      this.service.openSnackBar("You shouldn't be here!", "Sorry");
+      setTimeout(() => this.router.navigate(['/landing-page']), 1000);
+      return;
+    }
+    this.restaurantID = this.displayType.restaurantID;
+    this.getRestaurantMenu();
+  }
+
+  initOrder() {
+    if (!this.service.user || this.service.isAdmin) {
+      this.service.openSnackBar("You shouldn't be here!", "Sorry");
+      setTimeout(() => this.router.navigate(['/landing-page']), 1000);
+      return;
+    }
+    this.restaurantID = this.displayType.restaurantID;
+    this.getRestaurantMenu();
+  }
+
+  getRestaurantMenu() {
+    if (!this.restaurantID) {
       this.service.openSnackBar("Oh no, something bad happened", ":(");
       return;
     }
-    this.service.getMenuByRestaurantID(restaurantID).subscribe(response => {
+    this.service.getMenuByRestaurantID(this.restaurantID).subscribe(response => {
       if (!response.body) {
         this.service.openSnackBar("Catastrophic Failure", "Ok?");
         return;
@@ -113,7 +165,9 @@ export class MyRestaurantComponent implements OnInit {
   showAddRestaurantPopup() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "500px";
+    dialogConfig.minWidth = "50vw";
+    dialogConfig.maxWidth = "70vw";
+    dialogConfig.maxHeight = '80vh';
     var request = new AddRestaurantRequest();
     dialogConfig.data = request;
     const dialogRef = this.dialog.open(NewRestaurantDialogComponent, dialogConfig);
@@ -128,9 +182,10 @@ export class MyRestaurantComponent implements OnInit {
           this.service.openSnackBar("Something bad just happened", "Oh no!");
           return;
         } 
-        this.service.user.restaurant = response.body?.restaurant;
+        this.service.user.restaurant = response.body.restaurant;
+        this.restaurantID = response.body.restaurant.id;
         this.service.openSnackBar("Yay! Now you have a restaurant", "Super!");
-        this.getRestaurantMenu(response.body.restaurant.id);
+        this.getRestaurantMenu();
       }, responseError => {
         if (responseError.error.isError && !!responseError.error.errorMessage) {
           this.service.openSnackBar(responseError.error.errorMessage, "Close");
@@ -146,7 +201,9 @@ export class MyRestaurantComponent implements OnInit {
   addFoodItem(category: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "500px";
+    dialogConfig.minWidth = "50vw";
+    dialogConfig.maxWidth = "70vw";
+    dialogConfig.maxHeight = '80vh';
     var request = new AddFoodItemRequest();
     dialogConfig.data = request;
     const dialogRef = this.dialog.open(NewFoodItemDialogComponent, dialogConfig);
@@ -154,11 +211,11 @@ export class MyRestaurantComponent implements OnInit {
       if (request == new AddFoodItemRequest() || !request) {
         return;
       }
-      request.restaurantID = this.service.user.restaurant.id;
       request.categoryEnum = this.categoriesToShow[category];
-      this.service.addFoodItemToRestaurant(request).subscribe(_ => {
+      request.restaurantID = this.service.user.restaurant.id;
+      this.service.addFoodItemToRestaurant(request).subscribe(response => {
         this.service.openSnackBar("Food Item was successfully added", "Close");
-        this.getRestaurantMenu(this.service.user.restaurant.id);
+        this.getRestaurantMenu();
       }, responseError => {
         if (responseError.error.isError && !!responseError.error.errorMessage) {
           this.service.openSnackBar(responseError.error.errorMessage, "Close");
@@ -179,5 +236,67 @@ export class MyRestaurantComponent implements OnInit {
     document.getElementById(category)?.scrollIntoView();
   }
 
+  displayTypeAsNumber() {
+    if (!this.displayType) {
+      return 0;
+    }
+    return this.displayType?.displayType.valueOf();
+  }
+
+  destroyChild($event: MouseEvent) {
+    if (this.displayType?.displayType === DisplayTypeEnum.ORDER && this.potentialOrderFoodItems.length != 0) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.minWidth = "50vw";
+      dialogConfig.maxWidth = "70vw";
+      dialogConfig.maxHeight = '80vh';
+      dialogConfig.data = "Are you sure you want to close this restaurant? Your order will be lost!";
+      const dialogRef = this.dialog.open(YesNoDialogComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe((response : boolean) => {
+        if (!response) {
+          return;
+        }
+        this.buttonPressed.emit($event);
+      });
+    } else {
+      this.buttonPressed.emit($event);
+    }
+  }
+  
+  addItemForPotentialOrder(element: NarrowedFoodItem) {
+    this.potentialOrderFoodItems = this.potentialOrderFoodItems.concat(element);
+  }
+
+  showOrderPopup() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.minWidth = "50vw";
+    dialogConfig.maxWidth = "70vw";
+    dialogConfig.maxHeight = '80vh';
+    var foodItems = new Array<NarrowedFoodItem>();
+    foodItems = this.potentialOrderFoodItems;
+    dialogConfig.data = foodItems;
+    const dialogRef = this.dialog.open(NewOrderDialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((request: AddOrderRequest) => {
+      if (request == new AddOrderRequest() || !request) {
+        return;
+      }
+      request.userId = this.service.user.id;
+      this.service.placeOrder(request).subscribe(response => {
+        if (response.status == 204) {
+          this.service.openSnackBar("Successfully placed order!", "Yay");
+          return;
+        }
+      }, responseError => {
+        if (responseError.error.isError && !!responseError.error.errorMessage) {
+          this.service.openSnackBar(responseError.error.errorMessage, "Close");
+          return;
+        } else {
+          this.service.openSnackBar("Catastrophic Failure", "Ok?");
+          return;
+        }
+      });
+    });
+  }
 
 }

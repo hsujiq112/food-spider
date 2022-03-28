@@ -1,0 +1,55 @@
+<mat-toolbar>
+    <div class="flex-center">
+        <button mat-mini-fab class="primary" routerLink="/landing-page">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <span class="padding-left">
+            All Restaurants page
+        </span>
+    </div>
+</mat-toolbar>
+<ng-container *ngIf="!toDisplay">
+    <mat-table #table [dataSource]="tableSource" class="mat-elevation-z8">
+        
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+    
+        <!-- Location Column  -->
+        <ng-container matColumnDef="location">
+            <mat-header-cell *matHeaderCellDef> Location </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.location}} </mat-cell>
+        </ng-container>
+    
+        <!-- Delivery Zones Column  -->
+        <ng-container matColumnDef="deliveryZones">
+            <mat-header-cell *matHeaderCellDef> Delviery Zones </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{element.deliveryZones}}</mat-cell>
+        </ng-container>
+    
+        <!-- Categories Column -->
+        <ng-container matColumnDef="categories">
+            <mat-header-cell *matHeaderCellDef> Categories </mat-header-cell>
+            <mat-cell *matCellDef="let element">{{categoryText(element.categories)}}</mat-cell>
+        </ng-container>
+    
+        <!-- Actions Column  -->
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="flex-fancy"> 
+                <button mat-raised-button (click)="view(element)">View Restaurant</button>
+                <button mat-raised-button (click)="order(element)">Order from this Restaurant</button>
+            </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    
+    </mat-table>
+</ng-container>
+
+<ng-container *ngIf="toDisplay">
+    <restaurant-page [displayType]="restaurantDisplayType" (buttonPressed)="destroyChild()"></restaurant-page>
+</ng-container>

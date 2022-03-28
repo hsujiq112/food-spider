@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AddRestaurantResponse, GetRestaurantByAdminIDResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
+import { AddRestaurantResponse, GetRestaurantByAdminIDResponse, GetRestaurantsResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
 import { NarrowedResaurant, UserModel } from './api-model';
-import { AddFoodItemRequest, AddRestaurantRequest, LoginRequest, RegisterRequest } from './request-base';
+import { AddFoodItemRequest, AddOrderRequest, AddRestaurantRequest, LoginRequest, RegisterRequest } from './request-base';
 
 
 @Injectable({
@@ -50,8 +50,16 @@ export class SharedService {
     return this.http.post<ResponseBase>(this.APIUrl + '/addFoodToCategory', request, {observe: 'response'});
   }
 
+  placeOrder(request: AddOrderRequest) {
+    return this.http.post<ResponseBase>(this.APIUrl + '/placeOrder', request, {observe: 'response'});
+  }
+
   getRestaurantByAdminID(adminID: string) {
     return this.http.get<GetRestaurantByAdminIDResponse>(this.APIUrl + '/getRestaurantByAdminID/' + adminID, {observe: 'response'});
+  }
+
+  getRestaurants() {
+    return this.http.get<GetRestaurantsResponse>(this.APIUrl + '/restaurants', {observe: 'response'});
   }
   
 }

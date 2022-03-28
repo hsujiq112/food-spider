@@ -22,12 +22,14 @@ export class UserModel {
 
 export class NarrowedFoodItem {
     constructor() {
+        this.id = '';
         this.name = '';
         this.description = '';
         this.price = 0;
         this.category = 0;
         this.imageLink = '';
     }
+    public id: string;
     public name: string;
     public description: string;
     public price: number;
@@ -60,12 +62,14 @@ export class NarrowedResaurant {
         this.name = '';
         this.location = '';
         this.deliveryZones = '';
+        this.categories = new Array<number>();
     }
     
     public id: string;
     public name: string;
     public location: string;
     public deliveryZones: string;
+    public categories: Array<number>;
 }
 
 export enum CategoryEnum {
@@ -75,4 +79,21 @@ export enum CategoryEnum {
     DESSERT,
     BEVERAGES,
     TRENDING
+}
+
+export enum DisplayTypeEnum {
+    ADMIN,
+    VIEW,
+    ORDER
+}
+
+export class DisplayEmitter {
+
+    constructor() {
+        this.displayType = DisplayTypeEnum.ADMIN;
+        this.restaurantID = '';
+    }
+
+    public displayType: DisplayTypeEnum;
+    public restaurantID: string;
 }

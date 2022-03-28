@@ -1,5 +1,6 @@
 package com.foodspider.controller;
 
+import com.foodspider.exception.InvalidFoodItemException;
 import com.foodspider.exception.InvalidRestaurantException;
 import com.foodspider.exception.MissingAdministratorException;
 import com.foodspider.model.Administrator;
@@ -16,14 +17,13 @@ import com.foodspider.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 public class RestaurantController extends ControllerBase {
 
     @Autowired
@@ -62,6 +62,7 @@ public class RestaurantController extends ControllerBase {
         }
         return createOKResponse(new MenuItemsResponse(){{
             foodItems = new ArrayList<>(food.stream().map(i -> new NarrowedFoodItem(){{
+                id = i.getId();
                 name = i.getName();
                 description = i.getDescription();
                 price = i.getPrice();
@@ -121,8 +122,11 @@ public class RestaurantController extends ControllerBase {
         try {
             restaurantService.addFoodToRestaurant(request.restaurantID, request.foodName, request.foodDescription,
                     request.price, request.categoryEnum, request.foodImageLink);
-        } catch (Exception ex) {
-            createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        } catch (InvalidFoodItemException ex) {
+            return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
+        catch (Exception ex) {
+            return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
         return createEmptyResponse();
     }

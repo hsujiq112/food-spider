@@ -22,10 +22,14 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatCheckboxModule } from '@angular/material/checkbox'
-import { MyRestaurantComponent } from './ui/pages/my-restaurant-page/my-restaurant-page.component';
+import { MyRestaurantComponent } from './ui/pages/restaurant-page/restaurant-page.component';
 import { NewRestaurantDialogComponent } from './ui/pages/new-restaurant-dialog/new-restaurant-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { NewFoodItemDialogComponent } from './ui/pages/new-food-item-dialog/new-food-item-dialog.component';
+import { RestaurantsComponent } from './ui/pages/all-restaurants-page/all-restaurants-page.component';
+import { MatButtonModule } from '@angular/material/button';
+import { NewOrderDialogComponent } from './ui/pages/new-order-dialog/new-order-dialog.component';
+import { YesNoDialogComponent } from './ui/pages/yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,10 @@ import { NewFoodItemDialogComponent } from './ui/pages/new-food-item-dialog/new-
     LoginPageComponent,
     MyRestaurantComponent,
     NewRestaurantDialogComponent,
-    NewFoodItemDialogComponent
+    NewFoodItemDialogComponent,
+    RestaurantsComponent,
+    NewOrderDialogComponent,
+    YesNoDialogComponent
   ],
   imports: [
     MaterialModule,
@@ -56,7 +63,8 @@ import { NewFoodItemDialogComponent } from './ui/pages/new-food-item-dialog/new-
     MatMenuModule,
     MatCheckboxModule,
     BrowserAnimationsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule
   ],
   providers: [
     SharedService,
