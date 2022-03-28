@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddRestaurantResponse, GetRestaurantByAdminIDResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
 import { NarrowedResaurant, UserModel } from './api-model';
-import { AddRestaurantRequest, LoginRequest, RegisterRequest } from './request-base';
+import { AddFoodItemRequest, AddRestaurantRequest, LoginRequest, RegisterRequest } from './request-base';
 
 
 @Injectable({
@@ -44,6 +44,10 @@ export class SharedService {
 
   addRestaurantToAdmin(request: AddRestaurantRequest) {
     return this.http.post<AddRestaurantResponse>(this.APIUrl + '/addRestaurantToAdmin', request, {observe: 'response'});
+  }
+
+  addFoodItemToRestaurant(request: AddFoodItemRequest) {
+    return this.http.post<ResponseBase>(this.APIUrl + '/addFoodToCategory', request, {observe: 'response'});
   }
 
   getRestaurantByAdminID(adminID: string) {

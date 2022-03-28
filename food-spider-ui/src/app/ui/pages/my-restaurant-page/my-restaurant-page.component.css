@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .flex-center {
     display: flex;
     align-items: center;
@@ -6,4 +10,61 @@
 
 .padding-left {
     padding-left: 10px;
+}
+
+.content {
+    background-color: white;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.flex-wrap-space-between {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+button {
+    background-color: #d3d3d340
+}
+
+.button-wrapper {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    background: white;
+    padding-bottom: 10px;
+    z-index: 1;
+}
+
+.button-wrapper button {
+    background: none;
+}
+
+mat-card img{
+    height: 15vw;
+    object-fit: cover;
+}
+
+.narrowed-width {
+    width: 80%;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+mat-card mat-card-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.hidden {
+    display: none;
 }
