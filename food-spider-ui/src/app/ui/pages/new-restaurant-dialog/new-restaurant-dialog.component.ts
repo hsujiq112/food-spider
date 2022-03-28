@@ -1,8 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { AddRestaurantRequest } from 'src/app/request-base';
 import { SharedService } from 'src/app/shared.service';
+import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
+import { CategoryEnum } from 'src/app/api-model';
 
 @Component({
   selector: 'new-restaurant-dialog-page',
@@ -19,13 +23,15 @@ export class NewRestaurantDialogComponent implements OnInit {
   ) {}
   
   restaurantForm: FormGroup;
-  action: string;
-
+  categories = new FormControl();
+  deliveryZones: string[] = [];
+  removable: boolean = true;
+  separatorKeysCodes = [ENTER, COMMA, SPACE];
+  categoriesList: string[] = ["Breakfast", "Lunch", "Dinner", "Dessert", "Beverages", "Trending"]
   ngOnInit(): void {
     this.restaurantForm = this.formBuilder.group({
-      restaurantName: [this.request.name, Validators.required],
-      restaurantLocation: [this.request.location, Validators.required],
-      restaurantDeliveryZones: [this.request.deliveryZones, Validators.required],
+      restaurantName: ['', Validators.required],
+      restaurantLocation: ['', Validators.required],
     });
   }
 
@@ -35,7 +41,7 @@ export class NewRestaurantDialogComponent implements OnInit {
 
   save(): void {
     this.restaurantForm.markAllAsTouched();
-    if (!this.restaurantForm.valid) {
+    if (!this.restaurantForm.valid || this.deliveryZones.length == 0) {
       return;
     }
     for (const field in this.restaurantForm.controls) {
@@ -47,12 +53,32 @@ export class NewRestaurantDialogComponent implements OnInit {
         case "restaurantLocation":
           this.request.location = control?.value;
           break;
-        case "restaurantDeliveryZones":
-          this.request.deliveryZones = control?.value;
-          break;
       }
     }
+    this.request.deliveryZones = this.deliveryZones.join(",");
+    this.request.categories = this.categories.value;
     this.dialogRef.close(this.request);
   }
 
+  add(event: MatChipInputEvent) {
+    let input = event.input;
+    let value = event.value;
+
+    if ((value || '').trim()) {
+      this.deliveryZones.push(value.trim());
+    }
+
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(deliveryZone: string) {
+
+    let index = this.deliveryZones.indexOf(deliveryZone);
+
+    if (index >= 0) {
+      this.deliveryZones.splice(index, 1);
+    }
+  }
 }

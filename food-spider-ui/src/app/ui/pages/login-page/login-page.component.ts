@@ -35,7 +35,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         email: ['', [Validators.email, Validators.required]],
         username: ['', [Validators.required]],
         password: ['', [Validators.required]],
-        confirmPass: ['', [Validators.required]]
+        confirmPass: ['', [Validators.required]],
+        isAdmin: ['']
       },
       {
         validator: MustMatch("password", "confirmPass")
@@ -125,6 +126,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             break;
           case "password":
             registerRequest.password = control?.value;
+            break;
+          case "isAdmin":
+            registerRequest.isAdmin = control?.value;
             break;
         }
       }

@@ -4,8 +4,10 @@ import com.foodspider.exception.InvalidRestaurantException;
 import com.foodspider.exception.MissingAdministratorException;
 import com.foodspider.model.Administrator;
 import com.foodspider.model.FoodItem;
+import com.foodspider.model.Restaurant;
 import com.foodspider.model.narrowed_model.NarrowedFoodItem;
 import com.foodspider.model.narrowed_model.NarrowedRestaurant;
+import com.foodspider.model.narrowed_model.NarrowedUser;
 import com.foodspider.model.request_model.AddFoodToCategoryRequest;
 import com.foodspider.model.request_model.AddRestaurantRequest;
 import com.foodspider.model.response_model.*;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -33,9 +36,11 @@ public class RestaurantController extends ControllerBase {
         ArrayList<NarrowedRestaurant> restaurantsList;
         try {
             restaurantsList = new ArrayList<>(restaurantService.dbSet().stream().map(i -> new NarrowedRestaurant(){{
+                id = i.getId();
                 name = i.getName();
                 location = i.getLocation();
                 deliveryZones = i.getDeliveryZones();
+                categories = i.getCategories();
             }}).toList());
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
@@ -46,10 +51,12 @@ public class RestaurantController extends ControllerBase {
     }
 
     @GetMapping("/getMenuByRestaurantID/{id}")
-    public ResponseEntity<ResponseBase> getByRestaurantID(@RequestParam UUID id) {
+    public ResponseEntity<ResponseBase> getMenuByRestaurantID(@PathVariable UUID id) {
         ArrayList<FoodItem> food;
+        List<Integer> restaurantCategories;
         try {
             food = restaurantService.getFoodItemsByRestaurantID(id);
+            restaurantCategories = restaurantService.getCategoriesByRestaurantID(id);
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
@@ -61,6 +68,29 @@ public class RestaurantController extends ControllerBase {
                 category = i.getCategory();
                 imageLink = i.getImageLink();
             }}).toList());
+            categories = restaurantCategories;
+        }});
+    }
+
+    @GetMapping("/getRestaurantByAdminID/{id}")
+    public ResponseEntity<ResponseBase> getRestaurantByAdminID(@PathVariable UUID id) {
+        Restaurant restaurant;
+        try {
+            restaurant = administratorService.getFoodItemsByRestaurantID(id);
+        } catch (Exception ex) {
+            return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
+        if (restaurant == null) {
+            return createEmptyResponse();
+        }
+        return createOKResponse(new GetRestaurantByAdminIDResponse(){{
+            narrowedRestaurant = new NarrowedRestaurant(){{
+                id = restaurant.getId();
+                name = restaurant.getName();
+                location = restaurant.getLocation();
+                deliveryZones = restaurant.getDeliveryZones();
+                categories = restaurant.getCategories();
+            }};
         }});
     }
 
@@ -69,19 +99,25 @@ public class RestaurantController extends ControllerBase {
         Administrator admin;
         try {
             admin = administratorService.tryAddRestaurantToAdmin(request.adminID,
-                    request.name, request.location, request.deliveryZones);
+                    request.name, request.location, request.deliveryZones, request.categories);
         } catch (MissingAdministratorException | InvalidRestaurantException ex) {
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(new AddRestaurantResponse(){{
-            administrator = admin;
+            restaurant = new NarrowedRestaurant(){{
+                id = admin.getRestaurant().getId();
+                name = admin.getRestaurant().getName();
+                location = admin.getRestaurant().getLocation();
+                deliveryZones = admin.getRestaurant().getDeliveryZones();
+                categories = admin.getRestaurant().getCategories();
+            }};
         }});
     }
 
     @PatchMapping("/addFoodToCategory")
-    public ResponseEntity<EmptyResponse> addFoodToCategory(@RequestBody AddFoodToCategoryRequest request) {
+    public ResponseEntity<ResponseBase> addFoodToCategory(@RequestBody AddFoodToCategoryRequest request) {
         try {
             restaurantService.addFoodToRestaurant(request.restaurantID, request.foodName, request.foodDescription,
                     request.price, request.categoryEnum, request.foodImageLink);

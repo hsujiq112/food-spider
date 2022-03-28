@@ -18,17 +18,31 @@
         <mat-error>Required Field</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
-        <mat-label for="restaurantDeliveryZones">
-            Restaurant Delivery Zones
-        </mat-label>
-        <input matInput placeholder="Restaurant Delivery Zones" id="restaurantDeliveryZones" type="text" formControlName="restaurantDeliveryZones">
-        <mat-error>Required Field</mat-error>
+    <mat-form-field class="flex-nowrap">
+        <mat-label>Restaurant Delivery Zones</mat-label>
+        <mat-chip-list #chipList>
+            <mat-chip *ngFor="let deliveryZone of deliveryZones" (removed)="remove(deliveryZone)">
+              {{deliveryZone}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="Delivery Zones"
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="true"
+                   (matChipInputTokenEnd)="add($event)" />
+        </mat-chip-list>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Categories</mat-label>
+        <mat-select [formControl]="categories" multiple>
+          <mat-option *ngFor="let category of categoriesList; let i = index" [value]="i">{{category}}</mat-option>
+        </mat-select>
     </mat-form-field>
 
 </form>
 
 <mat-dialog-actions class="space-between">
-    <button mat-raised-button [ngClass]="{'red-button': !this.restaurantForm.valid}" (click)="save()">Save</button>
+    <button mat-raised-button [ngClass]="{'red-button': !this.restaurantForm.valid || this.deliveryZones.length == 0}" (click)="save()">Save</button>
     <button mat-raised-button (click)="close()">Close</button>
 </mat-dialog-actions>

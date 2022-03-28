@@ -25,6 +25,7 @@
     "@angular/youtube-player": "^13.1.1",
     "@material/checkbox": "^13.0.0",
     "@material/menu": "^13.0.0",
+    "@material/select": "^13.0.0",
     "@ng-bootstrap/ng-bootstrap": "^11.0.0",
     "angularx-social-login": "^4.0.1",
     "linq-to-typescript": "^9.0.0",

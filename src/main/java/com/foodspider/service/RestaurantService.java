@@ -18,6 +18,10 @@ public class RestaurantService extends ServiceBase<Restaurant> {
         return new ArrayList<>(getRepo().getById(id).getFoodItems());
     }
 
+    public ArrayList<Integer> getCategoriesByRestaurantID(UUID id) {
+        return new ArrayList<>(getRepo().getById(id).getCategories());
+    }
+
     public void addFoodToRestaurant(UUID restaurantID, String foodName, String foodDescription, Double price,
                                     CategoryEnum categoryEnum, String foodImageLink) {
         var restaurant = getRepo().getById(restaurantID);

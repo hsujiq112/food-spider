@@ -1,13 +1,17 @@
 package com.foodspider.service;
 
 import com.foodspider.exception.InvalidUserException;
+import com.foodspider.exception.MissingAdministratorException;
 import com.foodspider.model.Administrator;
 import com.foodspider.model.Customer;
+import com.foodspider.model.Restaurant;
 import com.foodspider.model.UserBase;
+import com.foodspider.validator.RestaurantValidator;
 import com.foodspider.validator.UserValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserBaseService extends ServiceBase<UserBase> {
@@ -37,5 +41,6 @@ public class UserBaseService extends ServiceBase<UserBase> {
         var customer = new Customer(emailAddress, firstName, lastName, username, password);
         return add(customer);
     }
+
 
 }

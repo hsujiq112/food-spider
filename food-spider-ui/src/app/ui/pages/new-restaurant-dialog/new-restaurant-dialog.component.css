@@ -5,3 +5,8 @@
 .red-button {
     background: rgb(202, 162, 162);
 }
+
+.flex-nowrap {
+    display: flex !important;
+    flex-wrap: nowrap;    
+}

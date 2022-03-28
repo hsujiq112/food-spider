@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
-import { UserModel } from './api-model';
-import { LoginRequest, RegisterRequest } from './request-base';
+import { AddRestaurantResponse, GetRestaurantByAdminIDResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
+import { NarrowedResaurant, UserModel } from './api-model';
+import { AddRestaurantRequest, LoginRequest, RegisterRequest } from './request-base';
 
 
 @Injectable({
@@ -31,15 +31,23 @@ export class SharedService {
   }
     
   login(loginModel: LoginRequest) {
-    return this.http.post<LoginResponse>(this.APIUrl+'/login', loginModel, {observe: 'response'});
+    return this.http.post<LoginResponse>(this.APIUrl + '/login', loginModel, {observe: 'response'});
   }
 
   register(registerModel: RegisterRequest) {
-    return this.http.post<ResponseBase>(this.APIUrl+'/register', registerModel, {observe: 'response'});
+    return this.http.post<ResponseBase>(this.APIUrl + '/register', registerModel, {observe: 'response'});
   }
 
-  getMenuByRestaurantID(adminID: string) {
-    return this.http.get<MenuItemsResponse>(this.APIUrl+'/getMenuByRestaurantID/' + adminID);
+  getMenuByRestaurantID(restaurantID: string) {
+    return this.http.get<MenuItemsResponse>(this.APIUrl + '/getMenuByRestaurantID/' + restaurantID, {observe: 'response'});
+  }
+
+  addRestaurantToAdmin(request: AddRestaurantRequest) {
+    return this.http.post<AddRestaurantResponse>(this.APIUrl + '/addRestaurantToAdmin', request, {observe: 'response'});
+  }
+
+  getRestaurantByAdminID(adminID: string) {
+    return this.http.get<GetRestaurantByAdminIDResponse>(this.APIUrl + '/getRestaurantByAdminID/' + adminID, {observe: 'response'});
   }
   
 }
