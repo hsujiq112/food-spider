@@ -1,6 +1,7 @@
 package com.foodspider.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,6 +31,7 @@ public class FoodItem extends BaseModel {
     private List<Order> orders;
 
     @ManyToOne
+    @Setter
     @JoinColumn(name = "restaurantID")
     private Restaurant restaurant;
 

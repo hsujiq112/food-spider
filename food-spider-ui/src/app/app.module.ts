@@ -25,6 +25,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MyRestaurantComponent } from './ui/pages/my-restaurant-page/my-restaurant-page.component';
 import { NewRestaurantDialogComponent } from './ui/pages/new-restaurant-dialog/new-restaurant-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
+import { NewFoodItemDialogComponent } from './ui/pages/new-food-item-dialog/new-food-item-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { MatSelectModule } from '@angular/material/select';
     LandingPageComponent,
     LoginPageComponent,
     MyRestaurantComponent,
-    NewRestaurantDialogComponent
+    NewRestaurantDialogComponent,
+    NewFoodItemDialogComponent
   ],
   imports: [
     MaterialModule,

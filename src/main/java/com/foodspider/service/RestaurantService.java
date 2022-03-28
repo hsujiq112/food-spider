@@ -28,6 +28,7 @@ public class RestaurantService extends ServiceBase<Restaurant> {
         FoodValidator.validateFood(foodName, foodDescription, price, categoryEnum, foodImageLink);
         var foodItem = new FoodItem(foodName, foodDescription, price, categoryEnum, foodImageLink);
         restaurant.getFoodItems().add(foodItem);
+        foodItem.setRestaurant(restaurant);
         getRepo().save(restaurant);
     }
 }

@@ -1,3 +1,5 @@
+import { CategoryEnum } from "./api-model";
+
 export class LoginRequest {
 
     constructor() {
@@ -43,4 +45,24 @@ export class AddRestaurantRequest {
     public location: string;
     public deliveryZones: string;
     public categories: number[];
+}
+
+export class AddFoodItemRequest {
+
+    constructor() {
+        this.restaurantID = '';
+        this.foodName = '';
+        this.foodDescription = '';
+        this.price = '';
+        this.foodImageLink = '';
+        this.categoryEnum = CategoryEnum.BREAKFAST;
+    }
+
+    public restaurantID: string;
+    public foodName: string;
+    public foodDescription: string;
+    public price: string;
+    public foodImageLink: string;
+    public categoryEnum: CategoryEnum;
+
 }

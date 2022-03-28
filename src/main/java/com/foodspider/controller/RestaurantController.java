@@ -116,7 +116,7 @@ public class RestaurantController extends ControllerBase {
         }});
     }
 
-    @PatchMapping("/addFoodToCategory")
+    @PostMapping("/addFoodToCategory")
     public ResponseEntity<ResponseBase> addFoodToCategory(@RequestBody AddFoodToCategoryRequest request) {
         try {
             restaurantService.addFoodToRestaurant(request.restaurantID, request.foodName, request.foodDescription,

@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>New Food Item</h2>
+
+<form [formGroup]="foodItemForm" class="form-wrapper">
+    
+    <mat-form-field>
+        <mat-label for="foodName">
+            Name
+        </mat-label>
+        <input matInput placeholder="Food Name" id="foodName" type="text" formControlName="foodName">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label for="foodDescription">
+            Description
+        </mat-label>
+        <input matInput placeholder="Food Description" id="foodDescription" type="text" formControlName="foodDescription">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label for="price">
+            Price
+        </mat-label>
+        <input matInput placeholder="Price" id="price" type="number" step="0.01" formControlName="price">
+        <mat-error>Invalid Price</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label for="foodImageLink">
+            Image Link
+        </mat-label>
+        <input matInput placeholder="Food Image Link" id="foodImageLink" type="text" formControlName="foodImageLink">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+
+</form>
+
+<mat-dialog-actions class="space-between">
+    <button mat-raised-button [ngClass]="{'red-button': !this.foodItemForm.valid}" (click)="save()">Save</button>
+    <button mat-raised-button (click)="close()">Close</button>
+</mat-dialog-actions>
