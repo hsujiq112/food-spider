@@ -28,6 +28,10 @@ public abstract class ServiceBase<T extends BaseModel> {
         return repoBase.save(userBase);
     }
 
+    public T getByID(UUID id) {
+        return repoBase.getById(id);
+    }
+
     public void deleteByID(UUID id) {
         repoBase.deleteById(id);
     }

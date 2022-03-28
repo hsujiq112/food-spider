@@ -1,4 +1,4 @@
-import { CategoryEnum } from "./api-model";
+import { CategoryEnum, NarrowedFoodItem } from "./api-model";
 
 export class LoginRequest {
 
@@ -65,4 +65,15 @@ export class AddFoodItemRequest {
     public foodImageLink: string;
     public categoryEnum: CategoryEnum;
 
+}
+
+export class AddOrderRequest {
+
+    constructor() {
+        this.userId = '';
+        this.foodItems = new Array<string>();
+    }
+
+    public userId: string;
+    public foodItems: Array<string>;
 }

@@ -4,6 +4,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 html {
     background-color: rgb(137, 137, 137);
+    scroll-behavior: smooth;
 }
 .dark-background{
     background-color: rgb(137, 137, 137);

@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Your order:</h2>
+<h3>Total Price: {{computePrice}}</h3>
+
+<div *ngFor="let element of foodItems; let i = index">
+    <mat-card >
+        <mat-card-title-group>
+            <mat-card-title>
+                {{element.name}}
+                <div class="fancy-button">
+                    <button mat-button-icon (click)="remove(i)">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+                </div>
+            </mat-card-title>
+            <mat-card-subtitle>{{element.price}}</mat-card-subtitle>
+            <img mat-card-sm-image src="{{element.imageLink}}" >
+        </mat-card-title-group>
+        <mat-card-content>
+          {{element.description}}
+        </mat-card-content>
+      </mat-card>
+</div>
+
+<mat-dialog-actions class="space-between">
+    <button [ngClass]="{'red-button': foodItems.length === 0}" mat-raised-button (click)="order()">Place Order</button>
+    <button mat-raised-button (click)="close()">Close</button>
+</mat-dialog-actions>

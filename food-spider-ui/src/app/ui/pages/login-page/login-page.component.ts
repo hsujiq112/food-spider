@@ -220,7 +220,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.service.user = new UserModel();
     this.service.isLoggedIn = false;
     this.service.isAdmin = false;
-    console.log(this.localUser.isLoggedIn);
     if (!this.localUser.isLoggedIn) {
       this.service.openSnackBar("Successfully logged out!", "Close")
     }

@@ -54,3 +54,13 @@ export class AddRestaurantResponse extends ResponseBase {
 
     public restaurant: NarrowedResaurant;
 }
+
+export class GetRestaurantsResponse extends ResponseBase {
+
+    constructor() {
+        super();
+        this.restaurants = new Array<NarrowedResaurant>();
+    }
+
+    public restaurants: Array<NarrowedResaurant>;
+}

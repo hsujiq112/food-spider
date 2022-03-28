@@ -1,0 +1,21 @@
+.content {
+    background-color: white;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+mat-cell {
+    flex-wrap: wrap;
+}
+
+.flex-fancy {
+    display: flex;
+    flex-direction: column;
+    align-content: stretch;
+    align-items: stretch;
+    justify-content: center;
+}
+
+button {
+    background-color: #d5d5d56b;
+}
