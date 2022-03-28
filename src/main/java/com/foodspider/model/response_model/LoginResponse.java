@@ -1,8 +1,8 @@
 package com.foodspider.model.response_model;
 
-import com.foodspider.model.UserBase;
+import com.foodspider.model.narrowed_model.NarrowedUser;
 
 public class LoginResponse extends ResponseBase {
-    public UserBase userBase;
+    public NarrowedUser userBase;
     public Boolean isAdmin;
 }

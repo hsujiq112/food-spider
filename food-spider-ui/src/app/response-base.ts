@@ -1,6 +1,7 @@
-import { NarrowedFoodItem, UserModel } from "./api-model";
+import { NarrowedFoodItem, NarrowedResaurant, UserModel } from "./api-model";
 
 export class ResponseBase {
+
     constructor() {
         this.isError = false;
         this.errorMessage = "";
@@ -11,6 +12,7 @@ export class ResponseBase {
 }
 
 export class LoginResponse extends ResponseBase {
+
     constructor() {
         super(); 
         this.userBase = new UserModel();
@@ -22,10 +24,33 @@ export class LoginResponse extends ResponseBase {
 }
 
 export class MenuItemsResponse extends ResponseBase {
+
     constructor() {
         super();
         this.foodItems = new Array<NarrowedFoodItem>();
+        this.categories = new Array<number>();
     }
 
     public foodItems: Array<NarrowedFoodItem>;
+    public categories: Array<number>;
+}
+
+export class GetRestaurantByAdminIDResponse extends ResponseBase {
+
+    constructor() {
+        super();
+        this.narrowedRestaurant = new NarrowedResaurant();
+    }
+
+    public narrowedRestaurant: NarrowedResaurant;
+}
+
+export class AddRestaurantResponse extends ResponseBase {
+
+    constructor() {
+        super();
+        this.restaurant = new NarrowedResaurant();
+    }
+
+    public restaurant: NarrowedResaurant;
 }

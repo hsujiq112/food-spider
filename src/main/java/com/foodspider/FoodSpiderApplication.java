@@ -16,23 +16,23 @@ public class FoodSpiderApplication implements WebMvcConfigurer{
     public UserBaseService userService() {
         return new UserBaseService();
     }
-    @Bean(name = "customerService")
+    @Bean(name = "cService")
     public CustomerService customerService() {
         return new CustomerService();
     }
-    @Bean(name = "administratorService")
+    @Bean(name = "aService")
     public AdministratorService administratorService() {
         return new AdministratorService();
     }
-    @Bean(name = "foodItemService")
+    @Bean(name = "fiService")
     public FoodItemService foodItemService() {
         return new FoodItemService();
     }
-    @Bean(name = "orderService")
+    @Bean(name = "oService")
     public OrderService orderService() {
         return new OrderService();
     }
-    @Bean(name = "restaurantService")
+    @Bean(name = "rService")
     public RestaurantService restaurantService() {
         return new RestaurantService();
     }

@@ -3,6 +3,7 @@ package com.foodspider.controller;
 import com.foodspider.exception.InvalidUserException;
 import com.foodspider.model.Administrator;
 import com.foodspider.model.UserBase;
+import com.foodspider.model.narrowed_model.NarrowedUser;
 import com.foodspider.model.request_model.LoginRequest;
 import com.foodspider.model.request_model.RegisterRequest;
 import com.foodspider.model.response_model.LoginResponse;
@@ -33,7 +34,14 @@ public class LoginController extends ControllerBase {
         }
         return createOKResponse(new LoginResponse(){{
             isAdmin = user instanceof Administrator;
-            userBase = user;
+            userBase = new NarrowedUser(){{
+                id = user.getId();
+                emailAddress = user.getEmailAddress();
+                firstName = user.getFirstName();
+                lastName = user.getLastName();
+                username = user.getUsername();
+                password = user.getPassword();
+            }};
         }});
     }
 

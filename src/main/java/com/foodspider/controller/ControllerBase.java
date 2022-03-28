@@ -18,7 +18,7 @@ public abstract class ControllerBase {
         }});
     }
 
-    public ResponseEntity<EmptyResponse> createEmptyResponse() {
+    public ResponseEntity<ResponseBase> createEmptyResponse() {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new EmptyResponse());
     }
 

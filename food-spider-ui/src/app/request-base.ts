@@ -35,10 +35,12 @@ export class AddRestaurantRequest {
         this.name = '';
         this.location = '';
         this.deliveryZones = '';
+        this.categories = [];
     }
 
     public adminID: string;
     public name: string;
     public location: string;
     public deliveryZones: string;
+    public categories: number[];
 }

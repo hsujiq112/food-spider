@@ -7,7 +7,7 @@ export class UserModel {
         this.username = '';
         this.password = '';
         this.orders = null;
-        this.restaurant = null;
+        this.restaurant = new NarrowedResaurant();
     }
 
     public id: string;
@@ -17,7 +17,7 @@ export class UserModel {
     public username: string;
     public password: string;
     public orders: any;
-    public restaurant: any;
+    public restaurant: NarrowedResaurant;
 }
 
 export class NarrowedFoodItem {
@@ -52,6 +52,20 @@ export class NarrowedFoodItem {
                 return "-";
         }
     }
+}
+
+export class NarrowedResaurant {
+    constructor() {
+        this.id = '';
+        this.name = '';
+        this.location = '';
+        this.deliveryZones = '';
+    }
+    
+    public id: string;
+    public name: string;
+    public location: string;
+    public deliveryZones: string;
 }
 
 export enum CategoryEnum {

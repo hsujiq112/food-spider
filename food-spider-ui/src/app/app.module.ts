@@ -23,8 +23,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu'
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { MyRestaurantComponent } from './ui/pages/my-restaurant-page/my-restaurant-page.component';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { NewRestaurantDialogComponent } from './ui/pages/new-restaurant-dialog/new-restaurant-dialog.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,8 @@ import { NewRestaurantDialogComponent } from './ui/pages/new-restaurant-dialog/n
     MatDialogModule,
     MatMenuModule,
     MatCheckboxModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSelectModule
   ],
   providers: [
     SharedService,
@@ -62,5 +63,3 @@ import { NewRestaurantDialogComponent } from './ui/pages/new-restaurant-dialog/n
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-
-platformBrowserDynamic().bootstrapModule(AppModule);

@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { SharedService } from 'src/app/shared.service';
 import { LoginPageComponent } from '../login-page/login-page.component'
-import { SocialAuthService, GoogleLoginProvider, SocialUser, FacebookLoginProvider } from 'angularx-social-login';
 
 @Component({
   selector: 'app-landing-page',
@@ -55,7 +53,6 @@ export class LandingPageComponent implements OnInit {
     if (!this.service.user){
       setTimeout(() => this._bottomSheet.open(LoginPageComponent), 1000);
     }
-
   }
 
 }
