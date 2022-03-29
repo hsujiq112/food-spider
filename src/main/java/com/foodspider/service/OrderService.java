@@ -19,10 +19,11 @@ public class OrderService extends ServiceBase<Order> {
         if (user == null) {
             throw new MissingCustomerException("Customer not found");
         }
-        var fullFoodItems = foodItems.stream().map(i -> foodItemService.getByID(i)).toList();
+        var fullFoodItems = foodItems.stream()
+                .map(i -> foodItemService.getByID(i)).toList();
         var order = new Order(user, fullFoodItems);
-        order.setCustomer(user);
         user.getOrders().add(order);
-        add(order);
+        forceUpdate(order, order.getId());
+        customerService.forceUpdate(user, userId);
     }
 }

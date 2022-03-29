@@ -34,6 +34,9 @@ public class Restaurant extends BaseModel {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<FoodItem> foodItems;
 
+    @OneToMany(mappedBy = "restaurant")
+    private List<Order> orders;
+
     public Restaurant(String name, String location, String deliveryZones, List<Integer> categories) {
         this.setId(UUID.randomUUID());
         this.name = name;
@@ -41,6 +44,7 @@ public class Restaurant extends BaseModel {
         this.deliveryZones = deliveryZones;
         this.categories = categories;
         this.foodItems = new ArrayList<>();
+        this.orders = new ArrayList<>();
     }
 
     public Restaurant() {

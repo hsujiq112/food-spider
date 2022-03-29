@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface RepositoryBase<T extends BaseModel> extends JpaRepository<T, UUID> {
-
+    
 }

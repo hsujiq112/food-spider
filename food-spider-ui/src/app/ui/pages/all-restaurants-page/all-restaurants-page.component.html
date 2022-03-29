@@ -39,8 +39,10 @@
         <ng-container matColumnDef="action">
             <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
             <mat-cell *matCellDef="let element" class="flex-fancy"> 
-                <button mat-raised-button (click)="view(element)">View Restaurant</button>
-                <button mat-raised-button (click)="order(element)">Order from this Restaurant</button>
+                <div>
+                    <button mat-raised-button (click)="view(element)">View Restaurant</button>
+                    <button mat-raised-button (click)="order(element)">Order from this Restaurant</button>
+                </div>
             </mat-cell>
         </ng-container>
     

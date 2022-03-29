@@ -117,18 +117,4 @@ public class RestaurantController extends ControllerBase {
         }});
     }
 
-    @PostMapping("/addFoodToCategory")
-    public ResponseEntity<ResponseBase> addFoodToCategory(@RequestBody AddFoodToCategoryRequest request) {
-        try {
-            restaurantService.addFoodToRestaurant(request.restaurantID, request.foodName, request.foodDescription,
-                    request.price, request.categoryEnum, request.foodImageLink);
-        } catch (InvalidFoodItemException ex) {
-            return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
-        }
-        catch (Exception ex) {
-            return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        }
-        return createEmptyResponse();
-    }
-
 }

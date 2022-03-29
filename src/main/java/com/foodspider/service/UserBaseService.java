@@ -2,14 +2,13 @@ package com.foodspider.service;
 
 import com.foodspider.exception.InvalidUserException;
 import com.foodspider.exception.MissingAdministratorException;
-import com.foodspider.model.Administrator;
-import com.foodspider.model.Customer;
-import com.foodspider.model.Restaurant;
-import com.foodspider.model.UserBase;
+import com.foodspider.model.*;
 import com.foodspider.validator.RestaurantValidator;
 import com.foodspider.validator.UserValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -40,6 +39,17 @@ public class UserBaseService extends ServiceBase<UserBase> {
         }
         var customer = new Customer(emailAddress, firstName, lastName, username, password);
         return add(customer);
+    }
+
+    public List<Order> getOrdersByUserID(UUID id) {
+        List<Order> orders;
+        var user = getByID(id);
+        if (user instanceof Administrator) {
+            orders = ((Administrator) user).getRestaurant().getOrders();
+        } else {
+            orders = ((Customer) user).getOrders();
+        }
+        return orders;
     }
 
 

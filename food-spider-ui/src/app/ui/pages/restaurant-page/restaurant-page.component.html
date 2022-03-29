@@ -51,6 +51,9 @@
                     <mat-card-actions *ngIf="displayTypeAsNumber() === 2" (click)="addItemForPotentialOrder(element)">
                         <button mat-button>Add to cart</button>
                     </mat-card-actions>
+                    <mat-card-actions *ngIf="displayTypeAsNumber() === 0" (click)="remove(element)">
+                        <button mat-button>Remove food</button>
+                    </mat-card-actions>
                 </mat-card>
             </div>
         </div>
