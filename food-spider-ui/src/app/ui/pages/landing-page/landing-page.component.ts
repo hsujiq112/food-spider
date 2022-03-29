@@ -28,7 +28,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   get ordersRoute(): string {
-    return !this.isAdmin ? "/my-orders-page" : "/restaurant-orders-page";
+    return "/orders-page";
   }
   
   get loggedIn(): boolean {

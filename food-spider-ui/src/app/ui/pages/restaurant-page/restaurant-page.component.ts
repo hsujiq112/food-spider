@@ -306,13 +306,17 @@ export class MyRestaurantComponent implements OnInit, OnChanges {
     dialogConfig.maxHeight = '80vh';
     var foodItems = new Array<NarrowedFoodItem>();
     foodItems = this.potentialOrderFoodItems;
-    dialogConfig.data = foodItems;
+    dialogConfig.data = {
+      foodItems: foodItems,
+      isForView: false
+    }
     const dialogRef = this.dialog.open(NewOrderDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((request: AddOrderRequest) => {
       if (request == new AddOrderRequest() || !request) {
         return;
       }
       request.userId = this.service.user.id;
+      request.restaurantId = this.restaurantID;
       this.service.placeOrder(request).subscribe(response => {
         if (response.status == 204) {
           this.service.openSnackBar("Successfully placed order!", "Yay");

@@ -68,12 +68,37 @@ export class AddFoodItemRequest {
 }
 
 export class AddOrderRequest {
-
+    
     constructor() {
         this.userId = '';
+        this.restaurantId = '';
         this.foodItems = new Array<string>();
     }
-
+    
     public userId: string;
+    public restaurantId: string;
     public foodItems: Array<string>;
+}
+
+export class GetOrdersCountByUserIDResponse {
+
+    constructor() {
+        this.pendingOrders = 0;
+        this.placedOrders = 0;
+    }
+
+    public placedOrders: number;
+    public pendingOrders: number;
+
+}
+
+export class ChangeStatusToOrderRequest {
+
+    constructor() {
+        this.orderID = '';
+        this.status = 0;
+    }
+
+    public orderID: string;
+    public status: number;
 }

@@ -18,7 +18,7 @@ import { UserModel } from 'src/app/api-model';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
-export class LoginPageComponent implements OnInit, OnDestroy {
+export class LoginPageComponent implements OnInit {
 
   constructor(
     private _bottomSheetRef: MatBottomSheetRef<LoginPageComponent>, 
@@ -60,11 +60,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   }
 
   get ordersCountText(): string {
-    return this.service.isAdmin ? "Resaurant orders count: " + "" : "Placed orders: " + "";
+    return (this.service.isAdmin ? "Resaurant orders count: " : "Placed orders: ") + this.localUser.placedOrders;
   }
 
   get ordersPendingText(): string {
-    return this.service.isAdmin ? "Pending orders: " + "" : "Undelivered orders: " + "";
+    return (this.service.isAdmin ? "Pending orders to approve: " : "Undelivered orders: ") + this.localUser.pendingOrders;
   }
 
   ngOnInit(): void {
@@ -78,17 +78,33 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       pendingOrders: 0
     }
     if (!!this.service.user?.username) {
-      this.loggedIn = true;
-      this.localUser.userType = this.service.isAdmin ? "Admin" : "Customer";
-      this.localUser.username = this.service.user.username;
-      this.localUser.isLoggedIn = true;
-      this.localUser.userAvatar = this.service.isAdmin ? "http://cdn.onlinewebfonts.com/svg/img_239979.png" :
-        "http://cdn.onlinewebfonts.com/svg/img_552555.png";
+      this.service.getOrdersCountByUserID(this.service.user.id, this.service.isAdmin).subscribe(response => {
+        if (!response.body) {
+          this.service.openSnackBar("Oh no.. something terribly wrong happened", ":O");
+          return;
+        }
+        this.service.ordersCount = response.body.placedOrders;
+        this.service.ordersPendingCount = response.body.pendingOrders;
+        this.loggedIn = true;
+        this.localUser = {
+          isLoggedIn: true,
+          userType: this.service.isAdmin ? "Admin" : "Customer",
+          username: this.service.user.username,
+          userAvatar: this.service.isAdmin ? "http://cdn.onlinewebfonts.com/svg/img_239979.png" :
+          "http://cdn.onlinewebfonts.com/svg/img_552555.png",
+          placedOrders: this.service.ordersCount,
+          pendingOrders:this.service.ordersPendingCount,
+        }
+      }, responeError => {
+        if (responeError.error.isError && !!responeError.error.errorMessage) {
+          this.service.openSnackBar(responeError.error.errorMessage, "Close");
+          return;
+        } else {
+          this.service.openSnackBar("Catastrophic Failure", "Ok?");
+          return;
+        }
+      });
     }
-  }
-
-  ngOnDestroy(): void {
-
   }
 
   dismiss(event: MouseEvent): void {
@@ -128,7 +144,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             registerRequest.password = control?.value;
             break;
           case "isAdmin":
-            registerRequest.isAdmin = control?.value;
+            registerRequest.isAdmin = control?.value == '' ? false : control?.value;
             break;
         }
       }
@@ -136,7 +152,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
           var loginModel = new LoginRequest();
           loginModel.username = registerRequest.username;
           loginModel.password = registerRequest.password;
-          this.login(loginModel);
+          this.login(loginModel, true);
       }, responseError => {
         if (responseError.error.isError && !!responseError.error.errorMessage) {
           this.service.openSnackBar(responseError.error.errorMessage, "Close");
@@ -165,30 +181,58 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             break;
         }
       }
-      this.login(loginModel);
+      this.login(loginModel, false);
     }
   }
 
-  login(loginModel: LoginRequest) {
+  login(loginModel: LoginRequest, newlyCreated: boolean) {
     this.service.login(loginModel).subscribe(response => {
-      if (!response.body?.userBase) {
+      if (!response.body) {
         this.service.openSnackBar("Fatal Failure", ":(");
         return;
       }
-      this.service.openSnackBar("Successfully logged in from DB!", "Close")
-      this.service.user = response.body?.userBase;
-      this.loggedIn = true;
-      this.service.isLoggedIn = true;
+      this.service.user = response.body.userBase;
       this.service.isAdmin = response.body.isAdmin;
-      this.localUser = {
-        isLoggedIn : true,
-        username : response.body?.userBase.username,
-        userType : this.service.isAdmin ? "Admin" : "Customer",
-        userAvatar : this.service.isAdmin ? "../../../../assets/administrator.png" :
-        "../../../../assets/customer.png",
-        placedOrders : 0,
-        pendingOrders: 0
-      };
+      if (newlyCreated) {
+        this.localUser = {
+          isLoggedIn : true,
+          username : this.service.user.username,
+          userType : this.service.isAdmin ? "Admin" : "Customer",
+          userAvatar : this.service.isAdmin ? "../../../../assets/administrator.png" :
+          "../../../../assets/customer.png",
+          placedOrders : 0,
+          pendingOrders : 0
+        }
+        return;
+      }
+      this.service.getOrdersCountByUserID(response.body.userBase.id, this.service.isAdmin).subscribe(response => {
+        if (!response.body) {
+          this.service.openSnackBar("Oh no.. something terribly wrong happened", ":O");
+          return;
+        }
+        this.service.openSnackBar("Successfully logged in from DB!", "Close")
+        this.loggedIn = true;
+        this.service.isLoggedIn = true;
+        this.service.ordersCount = response.body.placedOrders;
+        this.service.ordersPendingCount = response.body.pendingOrders;
+        this.localUser = {
+          isLoggedIn : true,
+          username : this.service.user.username,
+          userType : this.service.isAdmin ? "Admin" : "Customer",
+          userAvatar : this.service.isAdmin ? "../../../../assets/administrator.png" :
+          "../../../../assets/customer.png",
+          placedOrders : this.service.ordersCount,
+          pendingOrders: this.service.ordersPendingCount,
+        }
+      }, responeError => {
+          if (responeError.error.isError && !!responeError.error.errorMessage) {
+            this.service.openSnackBar(responeError.error.errorMessage, "Close");
+            return;
+          } else {
+            this.service.openSnackBar("Catastrophic Failure", "Ok?");
+            return;
+          }
+      });
       }, responeError => {
         if (responeError.error.isError && !!responeError.error.errorMessage) {
           this.service.openSnackBar(responeError.error.errorMessage, "Close");

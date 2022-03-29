@@ -1,0 +1,48 @@
+@keyframes animate-stripes {
+    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+}
+
+span.status {
+    padding: 2px;
+    border-radius: 3px;
+    color: white !important;
+    background-color: #7F7F7F;
+    font-size: 0.8rem !important;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0 -10px;
+}
+
+span.status.pending {
+    background-color: rgb(127, 127, 127);
+}
+
+span.status.accepted {
+    background-size: 30px 30px;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .25) 25%, transparent 25%,
+                        transparent 50%, rgba(255, 255, 255, .25) 50%, rgba(255, 255, 255, .25) 75%,
+                        transparent 75%, transparent);            
+    
+    animation: animate-stripes 3s linear infinite; ;
+    background-color: rgb(52, 201, 60);
+}
+
+span.status.delivered {
+    background-color: rgb(52, 201, 60);
+}
+
+span.status.declined {
+    background-color: rgb(195, 30, 30);
+}
+
+span.status.in-delivery {
+    background-size: 30px 30px;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .25) 25%, transparent 25%,
+                        transparent 50%, rgba(255, 255, 255, .25) 50%, rgba(255, 255, 255, .25) 75%,
+                        transparent 75%, transparent);            
+    
+    animation: animate-stripes 3s linear infinite; ;
+    background-color: #2045a1;
+}

@@ -1,13 +1,17 @@
-<h2 mat-dialog-title>Your order:</h2>
-<h3>Total Price: {{computePrice}}</h3>
+<h2 *ngIf="!dialogData.isForView; else viewOrder" mat-dialog-title>Your order:</h2>
+<h3>Total Price: {{computePrice | number : '1.2-2'}}</h3>
 
-<div *ngFor="let element of foodItems; let i = index">
+<ng-template #viewOrder>
+    <h2 mat-dialog-title>Selected Food Items:</h2>
+</ng-template>
+
+<div *ngFor="let element of dialogData.foodItems; let i = index">
     <mat-card >
         <mat-card-title-group>
             <mat-card-title>
                 {{element.name}}
                 <div class="fancy-button">
-                    <button mat-button-icon (click)="remove(i)">
+                    <button *ngIf="!dialogData.isForView" mat-button-icon (click)="remove(i)">
                         <mat-icon>cancel</mat-icon>
                     </button>
                 </div>
@@ -22,6 +26,6 @@
 </div>
 
 <mat-dialog-actions class="space-between">
-    <button [ngClass]="{'red-button': foodItems.length === 0}" mat-raised-button (click)="order()">Place Order</button>
+    <button *ngIf="!dialogData.isForView" [ngClass]="{'red-button': dialogData.foodItems.length === 0}" mat-raised-button (click)="order()">Place Order</button>
     <button mat-raised-button (click)="close()">Close</button>
 </mat-dialog-actions>

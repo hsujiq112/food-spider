@@ -1,0 +1,64 @@
+<mat-toolbar>
+    <div class="flex-center">
+        <button mat-mini-fab class="primary" routerLink="/landing-page">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <span class="padding-left">
+            My Orders page
+        </span>
+    </div>
+</mat-toolbar>
+
+<ng-container>
+    <mat-table #table [dataSource]="tableSource" class="mat-elevation-z8">
+        
+        <!-- Name Column -->
+        <ng-container matColumnDef="client">
+            <mat-header-cell *matHeaderCellDef> Client </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.$fullName}} </mat-cell>
+        </ng-container>
+    
+        <!-- Location Column  -->
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.$price | number : '1.2-2'}} </mat-cell>
+        </ng-container>
+    
+        <!-- Delivery Zones Column  -->
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <span class="status" class="{{element.$displayProcessStatus}}">
+                    {{element.$displayProcessStatusText}}
+                </span>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Actions Column  -->
+        <ng-container matColumnDef="seeFood">
+            <mat-header-cell *matHeaderCellDef> See Food </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="flex-fancy"> 
+                <button mat-raised-button (click)="showFoodItems(element)">See Food Items</button>
+            </mat-cell>
+        </ng-container>
+    
+        <!-- Actions Column  -->
+        <ng-container matColumnDef="changeStatus">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let element" class="flex-fancy">
+                <div *ngIf="isPending(element.status); else normalStatusChange">
+                    <button mat-raised-button (click)="changeStatus(element, 'ACCEPTED')">Accept</button>
+                    <button mat-raised-button (click)="changeStatus(element, 'DECLINED')">Decline</button>
+                </div>
+                <ng-template #normalStatusChange>
+                    <button mat-raised-button [disabled]="isDeclined(element.status) || isDelivered(element.status)"  (click)="changeStatus(element, '')">Change Status</button>
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    
+    </mat-table>
+</ng-container>
+

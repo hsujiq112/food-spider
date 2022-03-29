@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AddRestaurantResponse, GetRestaurantByAdminIDResponse, GetRestaurantsResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
+import { AddRestaurantResponse, GetOrdersByUserIDResponse, GetRestaurantByAdminIDResponse, GetRestaurantsResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
 import { NarrowedResaurant, UserModel } from './api-model';
-import { AddFoodItemRequest, AddOrderRequest, AddRestaurantRequest, LoginRequest, RegisterRequest } from './request-base';
+import { AddFoodItemRequest, AddOrderRequest, AddRestaurantRequest, ChangeStatusToOrderRequest, GetOrdersCountByUserIDResponse, LoginRequest, RegisterRequest } from './request-base';
 
 
 @Injectable({
@@ -16,6 +16,8 @@ export class SharedService {
   isLoggedIn: boolean = false;
   user: UserModel;
   isAdmin: boolean = false;
+  ordersCount: number = 0;
+  ordersPendingCount: number = 0;
   
   constructor(private http:HttpClient, private _snackBar: MatSnackBar) {
 
@@ -36,6 +38,14 @@ export class SharedService {
 
   register(registerModel: RegisterRequest) {
     return this.http.post<ResponseBase>(this.APIUrl + '/register', registerModel, {observe: 'response'});
+  }
+
+  getOrdersCountByUserID(id: string, isAdmin: boolean) {
+    return this.http.get<GetOrdersCountByUserIDResponse>(this.APIUrl + '/getOrdersCountByUserID/' + id + '/' + isAdmin, {observe: 'response'});
+  }
+
+  getOrdersByUserID(id: string, isAdmin: boolean) {
+    return this.http.get<GetOrdersByUserIDResponse>(this.APIUrl + '/getOrdersByUserID/' + id + '/' + isAdmin, {observe: 'response'});
   }
 
   getMenuByRestaurantID(restaurantID: string) {
@@ -64,6 +74,10 @@ export class SharedService {
 
   getRestaurants() {
     return this.http.get<GetRestaurantsResponse>(this.APIUrl + '/restaurants', {observe: 'response'});
+  }
+
+  changeStatusToOrder(request: ChangeStatusToOrderRequest) {
+    return this.http.patch<ResponseBase>(this.APIUrl + '/changeStatusToOrder', request, {observe: 'response'});
   }
   
 }

@@ -17,18 +17,23 @@ export class NewOrderDialogComponent implements OnInit {
   constructor(
     private service: SharedService,
     private formBuilder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public foodItems: Array<NarrowedFoodItem>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<NewOrderDialogComponent>
   ) {}
   
+  dialogData = {
+    foodItems: Array<NarrowedFoodItem>(),
+    isForView: true
+  }
 
   ngOnInit(): void {
-    
+    this.dialogData.foodItems = this.data.foodItems;
+    this.dialogData.isForView = this.data.isForView;
   }
 
   get computePrice(): number {
     var price = 0.0;
-    this.foodItems.forEach(i => price += i.price);
+    this.dialogData.foodItems.forEach(i => price += i.price);
     return price;
   }
 
@@ -37,17 +42,17 @@ export class NewOrderDialogComponent implements OnInit {
   }
 
   order(): void {
-    if (this.foodItems.length === 0) {
+    if (this.dialogData.foodItems.length === 0) {
       this.service.openSnackBar("You cannot place an order with 0 items", "Oh :(");
       return;
     }
     var request = new AddOrderRequest();
-    request.foodItems = this.foodItems.map(i => i.id);
+    request.foodItems = this.dialogData.foodItems.map(i => i.id);
     this.dialogRef.close(request);
   }
 
   remove(i: number): void {
-    this.foodItems.splice(i, 1);
+    this.dialogData.foodItems.splice(i, 1);
   }
 
 
