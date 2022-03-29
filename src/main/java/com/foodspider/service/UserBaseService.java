@@ -1,10 +1,12 @@
 package com.foodspider.service;
 
 import com.foodspider.exception.InvalidUserException;
-import com.foodspider.exception.MissingAdministratorException;
 import com.foodspider.model.*;
-import com.foodspider.validator.RestaurantValidator;
+import com.foodspider.model.narrowed_model.NarrowedFoodItem;
+import com.foodspider.model.narrowed_model.NarrowedOrder;
+import com.foodspider.model.response_model.GetOrdersCountByUserIDResponse;
 import com.foodspider.validator.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +16,11 @@ import java.util.UUID;
 
 @Service
 public class UserBaseService extends ServiceBase<UserBase> {
+
+    @Autowired
+    private AdministratorService administratorService;
+    @Autowired
+    private CustomerService customerService;
 
     public Optional<UserBase> findByUsername(String username) {
         return getRepo().findAll().stream()
@@ -41,16 +48,52 @@ public class UserBaseService extends ServiceBase<UserBase> {
         return add(customer);
     }
 
-    public List<Order> getOrdersByUserID(UUID id) {
+    public GetOrdersCountByUserIDResponse getOrdersCountByUserID(UUID id, Boolean isAdmin) {
         List<Order> orders;
-        var user = getByID(id);
-        if (user instanceof Administrator) {
-            orders = ((Administrator) user).getRestaurant().getOrders();
+        if (isAdmin) {
+            var restaurant = administratorService.getByID(id).getRestaurant();
+            if (restaurant == null) {
+                return new GetOrdersCountByUserIDResponse(){{
+                    placedOrders = 0;
+                    pendingOrders = 0;
+                }};
+            }
+            orders = restaurant.getOrders();
         } else {
-            orders = ((Customer) user).getOrders();
+            orders = customerService.getByID(id).getOrders();
         }
-        return orders;
+        return new GetOrdersCountByUserIDResponse(){{
+            placedOrders = orders.size();
+            pendingOrders = orders.stream()
+                    .filter(i -> i.getOrderStatus()
+                            .equals(OrderStatusEnum.PENDING)).toList().size();
+        }};
     }
 
-
+    public List<NarrowedOrder> getOrdersByUserID(UUID id, Boolean isAdmin) {
+        List<Order> orders;
+        if (isAdmin) {
+            var restaurant = administratorService.getByID(id).getRestaurant();
+            if (restaurant == null) {
+                return new ArrayList<>();
+            }
+            orders = restaurant.getOrders();
+        } else {
+            orders = customerService.getByID(id).getOrders();
+        }
+        return new ArrayList<>(orders.stream().map(i -> new NarrowedOrder(){{
+            id = i.getId();
+            foodItems = new ArrayList<>(i.getFoodItems().stream().map(j -> new NarrowedFoodItem(){{
+                id = j.getId();
+                name = j.getName();
+                description = j.getDescription();
+                price = j.getPrice();
+                category = j.getCategory();
+                imageLink = j.getImageLink();
+            }}).toList());
+            status = i.getOrderStatus();
+            clientFirstName = i.getCustomer().getFirstName();
+            clientLastName = i.getCustomer().getLastName();
+        }}).toList());
+    }
 }

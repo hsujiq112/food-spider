@@ -30,6 +30,7 @@ import { RestaurantsComponent } from './ui/pages/all-restaurants-page/all-restau
 import { MatButtonModule } from '@angular/material/button';
 import { NewOrderDialogComponent } from './ui/pages/new-order-dialog/new-order-dialog.component';
 import { YesNoDialogComponent } from './ui/pages/yes-no-dialog/yes-no-dialog.component';
+import { OrdersPageComponent } from './ui/pages/orders-page/orders-page.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { YesNoDialogComponent } from './ui/pages/yes-no-dialog/yes-no-dialog.com
     NewFoodItemDialogComponent,
     RestaurantsComponent,
     NewOrderDialogComponent,
-    YesNoDialogComponent
+    YesNoDialogComponent,
+    OrdersPageComponent
   ],
   imports: [
     MaterialModule,

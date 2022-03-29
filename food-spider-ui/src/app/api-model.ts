@@ -87,6 +87,15 @@ export enum DisplayTypeEnum {
     ORDER
 }
 
+export enum OrderStatusEnum {
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED",
+    IN_DELIVERY = "IN_DELIVERY",
+    DELIVERED = "DELIVERED",
+    DECLINED = "DECLINED"
+}
+
+
 export class DisplayEmitter {
 
     constructor() {
@@ -96,4 +105,31 @@ export class DisplayEmitter {
 
     public displayType: DisplayTypeEnum;
     public restaurantID: string;
+}
+
+export class NarrowedOrder {
+
+    constructor() {
+        this.foodItems = new Array<NarrowedFoodItem>();
+        this.clientFirstName = '';
+        this.clientLastName = ''; 
+        this.id = '';
+        this.status = OrderStatusEnum.PENDING;
+        this.$fullName = '';
+        this.$price = 0;
+        this.$displayProcessStatus = '';
+        this.$displayProcessStatusText = '';
+    }
+
+    public id: string;
+    public foodItems: Array<NarrowedFoodItem>;
+    public status: OrderStatusEnum;
+    public clientFirstName: string;
+    public clientLastName: string; 
+
+    public $fullName: string;
+    public $price: number;
+    public $displayProcessStatus: string;
+    public $displayProcessStatusText: string;
+
 }

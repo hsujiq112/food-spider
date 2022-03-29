@@ -1,4 +1,4 @@
-import { NarrowedFoodItem, NarrowedResaurant, UserModel } from "./api-model";
+import { NarrowedFoodItem, NarrowedOrder, NarrowedResaurant, OrderStatusEnum, UserModel } from "./api-model";
 
 export class ResponseBase {
 
@@ -63,4 +63,14 @@ export class GetRestaurantsResponse extends ResponseBase {
     }
 
     public restaurants: Array<NarrowedResaurant>;
+}
+
+export class GetOrdersByUserIDResponse extends ResponseBase {
+
+    constructor() {
+        super();
+        this.orders = new Array<NarrowedOrder>();
+    }
+
+    public orders: Array<NarrowedOrder>; 
 }

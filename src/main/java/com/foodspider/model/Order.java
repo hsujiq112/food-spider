@@ -13,6 +13,7 @@ import java.util.UUID;
 @Table(name = "orderuru")
 public class Order extends BaseModel {
 
+    @Setter
     @Column(nullable = false)
     private OrderStatusEnum orderStatus;
 
@@ -42,10 +43,11 @@ public class Order extends BaseModel {
 
     }
 
-    public Order(Customer customer, List<FoodItem> foodItems) {
+    public Order(Restaurant restaurant, Customer customer, List<FoodItem> foodItems) {
         this.setId(UUID.randomUUID());
         this.customer = customer;
         this.foodItems = foodItems;
+        this.restaurant = restaurant;
         this.orderStatus = OrderStatusEnum.PENDING;
     }
 }
