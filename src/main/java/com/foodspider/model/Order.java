@@ -21,6 +21,11 @@ public class Order extends BaseModel {
     @JoinColumn(name = "customerID")
     private Customer customer;
 
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "restaurantID")
+    private Restaurant restaurant;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "food_item_order",
             joinColumns = @JoinColumn(name = "order_id"),

@@ -39,7 +39,7 @@ public class FoodSpiderApplication implements WebMvcConfigurer{
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**");
+        registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH");
     }
 
     public static void main(String[] args) {

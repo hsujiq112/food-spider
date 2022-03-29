@@ -228,6 +228,37 @@ export class MyRestaurantComponent implements OnInit, OnChanges {
     });
   }
 
+  remove(element: NarrowedFoodItem) {
+    const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.minWidth = "50vw";
+      dialogConfig.maxWidth = "70vw";
+      dialogConfig.maxHeight = '80vh';
+      dialogConfig.data = "Are you sure you want to delete " + element.name + "?";
+      const dialogRef = this.dialog.open(YesNoDialogComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe((response : boolean) => {
+        if (!response) {
+          return;
+        }
+        this.service.deleteFoodItemById(element.id).subscribe(response => {
+          if (response.status == 204) {
+            this.service.openSnackBar("Successfully deleted " + element.name, "Close");
+            this.getRestaurantMenu();
+          } else {
+            this.service.openSnackBar("Impossible", "Shocking");
+          }
+        }, responseError => {
+          if (responseError.error.isError && !!responseError.error.errorMessage) {
+            this.service.openSnackBar(responseError.error.errorMessage, "Close");
+            return;
+          } else {
+            this.service.openSnackBar("Catastrophic Failure", "Ok?");
+            return;
+          }
+        })
+      });
+  }
+
   isInCategory(foodItem: NarrowedFoodItem, category: number) {
     return CategoryEnum[this.categoriesToShow[category]] == foodItem.category.toString();
   }
@@ -285,6 +316,7 @@ export class MyRestaurantComponent implements OnInit, OnChanges {
       this.service.placeOrder(request).subscribe(response => {
         if (response.status == 204) {
           this.service.openSnackBar("Successfully placed order!", "Yay");
+          this.potentialOrderFoodItems.splice(0, this.potentialOrderFoodItems.length);
           return;
         }
       }, responseError => {

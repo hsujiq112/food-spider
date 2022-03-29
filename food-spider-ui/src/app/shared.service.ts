@@ -50,6 +50,10 @@ export class SharedService {
     return this.http.post<ResponseBase>(this.APIUrl + '/addFoodToCategory', request, {observe: 'response'});
   }
 
+  deleteFoodItemById(id: String) {
+    return this.http.delete<ResponseBase>(this.APIUrl + '/foodItem/' + id, {observe: 'response'});
+  }
+
   placeOrder(request: AddOrderRequest) {
     return this.http.post<ResponseBase>(this.APIUrl + '/placeOrder', request, {observe: 'response'});
   }
