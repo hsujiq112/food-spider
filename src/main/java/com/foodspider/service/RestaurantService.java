@@ -3,6 +3,7 @@ package com.foodspider.service;
 import com.foodspider.model.CategoryEnum;
 import com.foodspider.model.FoodItem;
 import com.foodspider.model.Restaurant;
+import com.foodspider.model.narrowed_model.NarrowedRestaurant;
 import com.foodspider.validator.FoodValidator;
 
 import java.util.ArrayList;
@@ -30,5 +31,19 @@ public class RestaurantService extends ServiceBase<Restaurant> {
         restaurant.getFoodItems().add(foodItem);
         foodItem.setRestaurant(restaurant);
         getRepo().save(restaurant);
+    }
+
+    public ArrayList<NarrowedRestaurant> getNarrowedRestaurants(String filter) {
+        var restaurants = dbSet().stream().map(i -> new NarrowedRestaurant(){{
+            id = i.getId();
+            name = i.getName();
+            location = i.getLocation();
+            deliveryZones = i.getDeliveryZones();
+            categories = i.getCategories();
+        }}).toList();
+        if (filter != null) {
+            restaurants = restaurants.stream().filter(i -> i.name.toLowerCase().contains(filter)).toList();
+        }
+        return new ArrayList<>(restaurants);
     }
 }

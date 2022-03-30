@@ -35,13 +35,20 @@ public class RestaurantController extends ControllerBase {
     public ResponseEntity<ResponseBase> getRestaurants() {
         ArrayList<NarrowedRestaurant> restaurantsList;
         try {
-            restaurantsList = new ArrayList<>(restaurantService.dbSet().stream().map(i -> new NarrowedRestaurant(){{
-                id = i.getId();
-                name = i.getName();
-                location = i.getLocation();
-                deliveryZones = i.getDeliveryZones();
-                categories = i.getCategories();
-            }}).toList());
+            restaurantsList = restaurantService.getNarrowedRestaurants(null);
+        } catch (Exception ex) {
+            return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
+        return createOKResponse(new GetRestaurantsResponse(){{
+            restaurants = restaurantsList;
+        }});
+    }
+
+    @GetMapping("/restaurants/{filter}")
+    public ResponseEntity<ResponseBase> getRestaurants(@PathVariable String filter) {
+        ArrayList<NarrowedRestaurant> restaurantsList;
+        try {
+            restaurantsList = restaurantService.getNarrowedRestaurants(filter);
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }

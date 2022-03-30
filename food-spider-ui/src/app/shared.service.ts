@@ -47,6 +47,10 @@ export class SharedService {
   getOrdersByUserID(id: string, isAdmin: boolean) {
     return this.http.get<GetOrdersByUserIDResponse>(this.APIUrl + '/getOrdersByUserID/' + id + '/' + isAdmin, {observe: 'response'});
   }
+  
+  getOrdersByUserIDFiltered(id: string, isAdmin: boolean, filter: number) {
+    return this.http.get<GetOrdersByUserIDResponse>(this.APIUrl + '/getOrdersByUserIDFiltered/' + id + '/' + isAdmin + '/' + filter, {observe: 'response'});
+  }
 
   getMenuByRestaurantID(restaurantID: string) {
     return this.http.get<MenuItemsResponse>(this.APIUrl + '/getMenuByRestaurantID/' + restaurantID, {observe: 'response'});
@@ -74,6 +78,10 @@ export class SharedService {
 
   getRestaurants() {
     return this.http.get<GetRestaurantsResponse>(this.APIUrl + '/restaurants', {observe: 'response'});
+  }
+
+  getRestaurantsFiltered(filter: string) {
+    return this.http.get<GetRestaurantsResponse>(this.APIUrl + '/restaurants/' + filter, {observe: 'response'});
   }
 
   changeStatusToOrder(request: ChangeStatusToOrderRequest) {

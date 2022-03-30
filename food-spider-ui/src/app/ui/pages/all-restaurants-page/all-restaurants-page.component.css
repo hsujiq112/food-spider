@@ -25,3 +25,11 @@ mat-cell div {
 button {
     background-color: #d5d5d56b;
 }
+
+.full-width {
+    width: 100%;
+}
+
+div mat-form-field {
+    font-size: 80% !important;
+}

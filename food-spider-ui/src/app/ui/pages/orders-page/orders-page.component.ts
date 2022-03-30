@@ -20,12 +20,11 @@ export class OrdersPageComponent implements OnInit {
     private service: SharedService,
     private dialog: MatDialog,
     private router: Router,
-    private route: ActivatedRoute
   ) {}
 
   tableSource: Array<NarrowedOrder>;
   displayedColumns: string[] = ['client', 'price', 'status', 'action'];
-
+  selected: number;
 
   ngOnInit(): void {
     initializeLinq();
@@ -39,13 +38,31 @@ export class OrdersPageComponent implements OnInit {
     if (this.service.isAdmin) {
       this.displayedColumns = ['client', 'price', 'status', 'seeFood', 'changeStatus'];
     } else {
-      this.displayedColumns = ['price', 'status', 'seeFood']
+      this.displayedColumns = ['restaurant', 'price', 'status', 'seeFood']
     }
     this.getOrders();
   }
 
   getOrders() {
     this.service.getOrdersByUserID(this.service.user.id, this.service.isAdmin).subscribe(response => {
+      if (!response.body) {
+        this.service.openSnackBar("Oh no!", "Ikr?");
+        return;
+      }
+      this.tableSource = this.resolveParameters(response.body.orders);
+    }, responseError => {
+        if (responseError.error.isError && !!responseError.error.errorMessage) {
+          this.service.openSnackBar(responseError.error.errorMessage, "Close");
+          return;
+        } else {
+          this.service.openSnackBar("Catastrophic Failure", "Ok?");
+          return;
+        }
+    });
+  }
+
+  getOrdersFiltered() {
+    this.service.getOrdersByUserIDFiltered(this.service.user.id, this.service.isAdmin, this.selected).subscribe(response => {
       if (!response.body) {
         this.service.openSnackBar("Oh no!", "Ikr?");
         return;
@@ -96,6 +113,10 @@ export class OrdersPageComponent implements OnInit {
     }
   }
 
+  get getAllDisplayStatuses(): string[] {
+    return ["Pending", "Accepted", "In Delivery", "Delivered", "Declined"];
+  }
+
   convertStatusToNumber(status: string): number {
     switch(status) {
       case OrderStatusEnum.PENDING:
@@ -123,6 +144,14 @@ export class OrdersPageComponent implements OnInit {
 
   isDelivered(status: OrderStatusEnum) {
     return status == OrderStatusEnum.DELIVERED;
+  }
+
+  onChange() {
+    if (this.selected == undefined) {
+      this.getOrders();
+    } else {
+      this.getOrdersFiltered();
+    }
   }
 
   changeStatus(element: NarrowedOrder, status: string) {

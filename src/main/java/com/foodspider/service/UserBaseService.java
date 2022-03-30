@@ -70,7 +70,7 @@ public class UserBaseService extends ServiceBase<UserBase> {
         }};
     }
 
-    public List<NarrowedOrder> getOrdersByUserID(UUID id, Boolean isAdmin) {
+    public List<NarrowedOrder> getOrdersByUserID(UUID id, Boolean isAdmin, Integer filter) {
         List<Order> orders;
         if (isAdmin) {
             var restaurant = administratorService.getByID(id).getRestaurant();
@@ -80,6 +80,10 @@ public class UserBaseService extends ServiceBase<UserBase> {
             orders = restaurant.getOrders();
         } else {
             orders = customerService.getByID(id).getOrders();
+        }
+        if (filter != -1) {
+            orders = orders.stream().filter(i -> i.getOrderStatus()
+                    .equals(OrderStatusEnum.values()[filter])).toList();
         }
         return new ArrayList<>(orders.stream().map(i -> new NarrowedOrder(){{
             id = i.getId();
@@ -94,6 +98,7 @@ public class UserBaseService extends ServiceBase<UserBase> {
             status = i.getOrderStatus();
             clientFirstName = i.getCustomer().getFirstName();
             clientLastName = i.getCustomer().getLastName();
+            restaurantName = i.getRestaurant().getName();
         }}).toList());
     }
 }

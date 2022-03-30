@@ -10,6 +10,7 @@ public class NarrowedOrder {
     public UUID id;
     public List<NarrowedFoodItem> foodItems;
     public OrderStatusEnum status;
+    public String restaurantName;
     public String clientFirstName;
     public String clientLastName;
 }
