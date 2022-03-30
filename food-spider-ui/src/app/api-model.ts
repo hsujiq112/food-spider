@@ -110,6 +110,7 @@ export class DisplayEmitter {
 export class NarrowedOrder {
 
     constructor() {
+        this.restaurantName = '';
         this.foodItems = new Array<NarrowedFoodItem>();
         this.clientFirstName = '';
         this.clientLastName = ''; 
@@ -123,6 +124,7 @@ export class NarrowedOrder {
 
     public id: string;
     public foodItems: Array<NarrowedFoodItem>;
+    public restaurantName: string;
     public status: OrderStatusEnum;
     public clientFirstName: string;
     public clientLastName: string; 

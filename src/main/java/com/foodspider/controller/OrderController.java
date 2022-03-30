@@ -43,7 +43,24 @@ public class OrderController extends ControllerBase {
     public ResponseEntity<ResponseBase> getOrders(@PathVariable UUID id, @PathVariable Boolean isAdmin) {
         List<NarrowedOrder> narrowedOrders;
         try {
-            narrowedOrders = userBaseService.getOrdersByUserID(id, isAdmin);
+            narrowedOrders = userBaseService.getOrdersByUserID(id, isAdmin, -1);
+        } catch (InvalidUserException ex) {
+            return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+        } catch (Exception ex) {
+            return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        }
+        return createOKResponse(new GetOrdersByUserIDResponse(){{
+            orders = narrowedOrders;
+        }});
+    }
+
+    @GetMapping("/getOrdersByUserIDFiltered/{id}/{isAdmin}/{filter}")
+    public ResponseEntity<ResponseBase> getOrdersFiltered(@PathVariable UUID id,
+                                                          @PathVariable Boolean isAdmin,
+                                                          @PathVariable Integer filter) {
+        List<NarrowedOrder> narrowedOrders;
+        try {
+            narrowedOrders = userBaseService.getOrdersByUserID(id, isAdmin, filter);
         } catch (InvalidUserException ex) {
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {

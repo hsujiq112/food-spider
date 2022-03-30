@@ -34,7 +34,29 @@ export class RestaurantsComponent implements OnInit {
       setTimeout(() => this.router.navigate(['/landing-page']), 1000);
       return;
     }
+    this.getRestaurants();
+  }
+
+  getRestaurants() {
     this.service.getRestaurants().subscribe(response => {
+      if (!response.body) {
+        this.service.openSnackBar("Uhm... where restaurants", "???");
+        return;
+      }
+      this.tableSource = response.body.restaurants;
+    }, responseError => {
+      if (responseError.error.isError && !!responseError.error.errorMessage) {
+        this.service.openSnackBar(responseError.error.errorMessage, "Close");
+        return;
+      } else {
+        this.service.openSnackBar("Catastrophic Failure", "Ok?");
+        return;
+      }
+    });
+  }
+
+  getRestaurantsFiltered(filter: string) {
+    this.service.getRestaurantsFiltered(filter).subscribe(response => {
       if (!response.body) {
         this.service.openSnackBar("Uhm... where restaurants", "???");
         return;
@@ -91,6 +113,15 @@ export class RestaurantsComponent implements OnInit {
     this.restaurantDisplayType.restaurantID = element.id;
     this.restaurantDisplayType.displayType = DisplayTypeEnum.ORDER;
     this.toDisplay = true;
+  }
+
+  applyFilter($event: any) {
+    var filterValue = ($event.target as HTMLInputElement).value.toLowerCase();
+    if (filterValue == '') {
+      this.getRestaurants();
+      return;
+    }
+    this.getRestaurantsFiltered(filterValue);
   }
 
   destroyChild() {

@@ -7,11 +7,26 @@
             My Orders page
         </span>
     </div>
+    <mat-form-field>
+        <mat-label>Order Status</mat-label>
+        <mat-select (selectionChange)="onChange()" [(value)]="selected">
+          <mat-option>All</mat-option>
+          <mat-option *ngFor="let status of getAllDisplayStatuses; let i = index" [value]="i">
+            {{status}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 </mat-toolbar>
 
 <ng-container>
     <mat-table #table [dataSource]="tableSource" class="mat-elevation-z8">
         
+        <!-- Name Column -->
+        <ng-container matColumnDef="restaurant">
+            <mat-header-cell *matHeaderCellDef> Restaurant </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.restaurantName}} </mat-cell>
+        </ng-container>
+
         <!-- Name Column -->
         <ng-container matColumnDef="client">
             <mat-header-cell *matHeaderCellDef> Client </mat-header-cell>
@@ -51,7 +66,7 @@
                     <button mat-raised-button (click)="changeStatus(element, 'DECLINED')">Decline</button>
                 </div>
                 <ng-template #normalStatusChange>
-                    <button mat-raised-button [disabled]="isDeclined(element.status) || isDelivered(element.status)"  (click)="changeStatus(element, '')">Change Status</button>
+                    <button mat-raised-button [disabled]="isDeclined(element.status) || isDelivered(element.status)"  (click)="changeStatus(element, '')">Advance Order</button>
                 </ng-template>
             </mat-cell>
         </ng-container>
