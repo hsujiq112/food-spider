@@ -26,8 +26,10 @@
         </div>
     </div>
     <div *ngFor="let category of categoriesToShowText; let i = index">
-        <div id="{{category}}" class="flex-wrap-space-between background-slight-grey">
-            {{category}}
+        <div id="{{category}}" class="flex-wrap-space-between category-background">
+            <div class="category">
+                {{category}}
+            </div>
             <button *ngIf="displayTypeAsNumber() === 0" mat-button (click)="addFoodItem(i)">Add food item </button>
         </div>
         <mat-divider horizontal></mat-divider>

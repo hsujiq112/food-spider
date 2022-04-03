@@ -1,5 +1,6 @@
 package com.foodspider.service;
 
+import com.foodspider.exception.InvalidOrderChangeException;
 import com.foodspider.exception.MissingCustomerException;
 import com.foodspider.model.Order;
 import com.foodspider.model.OrderStatusEnum;
@@ -33,6 +34,12 @@ public class OrderService extends ServiceBase<Order> {
 
     public void changeStatusToOrder(UUID orderID, Integer status) {
         var order = getByID(orderID);
+        if (order.getOrderStatus().equals(OrderStatusEnum.DECLINED)) {
+            throw new InvalidOrderChangeException("Cannot change from Declined Order to something else!");
+        }
+        if (order.getOrderStatus().equals(OrderStatusEnum.DELIVERED)) {
+            throw new InvalidOrderChangeException("Cannot change from Delivered Order to something else!");
+        }
         order.setOrderStatus(OrderStatusEnum.values()[status]);
         update(order, orderID);
     }

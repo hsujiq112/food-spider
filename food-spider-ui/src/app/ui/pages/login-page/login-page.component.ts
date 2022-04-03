@@ -194,6 +194,8 @@ export class LoginPageComponent implements OnInit {
       this.service.user = response.body.userBase;
       this.service.isAdmin = response.body.isAdmin;
       if (newlyCreated) {
+        this.loggedIn = true;
+        this.service.isLoggedIn = true;
         this.localUser = {
           isLoggedIn : true,
           username : this.service.user.username,

@@ -1,5 +1,6 @@
 package com.foodspider.controller;
 
+import com.foodspider.exception.InvalidOrderChangeException;
 import com.foodspider.exception.InvalidUserException;
 import com.foodspider.exception.MissingCustomerException;
 import com.foodspider.model.narrowed_model.NarrowedOrder;
@@ -27,7 +28,8 @@ public class OrderController extends ControllerBase {
     private UserBaseService userBaseService;
 
     @GetMapping("/getOrdersCountByUserID/{id}/{isAdmin}")
-    public ResponseEntity<ResponseBase> getOrdersCount(@PathVariable UUID id, @PathVariable Boolean isAdmin) {
+    public ResponseEntity<ResponseBase> getOrdersCount(@PathVariable UUID id,
+                                                       @PathVariable Boolean isAdmin) {
         var response = new GetOrdersCountByUserIDResponse();
         try {
             response = userBaseService.getOrdersCountByUserID(id, isAdmin);
@@ -40,7 +42,8 @@ public class OrderController extends ControllerBase {
     }
 
     @GetMapping("/getOrdersByUserID/{id}/{isAdmin}")
-    public ResponseEntity<ResponseBase> getOrders(@PathVariable UUID id, @PathVariable Boolean isAdmin) {
+    public ResponseEntity<ResponseBase> getOrders(@PathVariable UUID id,
+                                                  @PathVariable Boolean isAdmin) {
         List<NarrowedOrder> narrowedOrders;
         try {
             narrowedOrders = userBaseService.getOrdersByUserID(id, isAdmin, -1);
@@ -87,6 +90,8 @@ public class OrderController extends ControllerBase {
     public ResponseEntity<ResponseBase> changeStatusToOrder(@RequestBody ChangeStatusToOrderRequest changeStatusToOrderRequest) {
         try {
             orderService.changeStatusToOrder(changeStatusToOrderRequest.orderID, changeStatusToOrderRequest.status);
+        } catch (InvalidOrderChangeException ex) {
+          return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }

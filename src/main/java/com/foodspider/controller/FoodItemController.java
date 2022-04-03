@@ -1,6 +1,6 @@
 package com.foodspider.controller;
 
-import com.foodspider.exception.FoodItemInUseExcepiton;
+import com.foodspider.exception.FoodItemInUseException;
 import com.foodspider.exception.InvalidFoodItemException;
 import com.foodspider.exception.MissingFoodItemException;
 import com.foodspider.model.request_model.AddFoodToCategoryRequest;
@@ -40,7 +40,7 @@ public class FoodItemController extends ControllerBase {
     public ResponseEntity<ResponseBase> delete(@PathVariable UUID id) {
         try {
             foodItemService.deleteByID(id);
-        } catch (MissingFoodItemException | FoodItemInUseExcepiton ex) {
+        } catch (MissingFoodItemException | FoodItemInUseException ex) {
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());

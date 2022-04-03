@@ -5,7 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AddRestaurantRequest } from 'src/app/request-base';
 import { SharedService } from 'src/app/shared.service';
-import {ENTER, COMMA, SPACE} from '@angular/cdk/keycodes';
+import {ENTER, COMMA} from '@angular/cdk/keycodes';
 import { CategoryEnum } from 'src/app/api-model';
 
 @Component({
@@ -26,7 +26,7 @@ export class NewRestaurantDialogComponent implements OnInit {
   categories = new FormControl();
   deliveryZones: string[] = [];
   removable: boolean = true;
-  separatorKeysCodes = [ENTER, COMMA, SPACE];
+  separatorKeysCodes = [ENTER, COMMA];
   categoriesList: string[] = ["Breakfast", "Lunch", "Dinner", "Dessert", "Beverages", "Trending"]
   ngOnInit(): void {
     this.restaurantForm = this.formBuilder.group({

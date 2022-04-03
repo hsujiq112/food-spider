@@ -1,6 +1,6 @@
 package com.foodspider.service;
 
-import com.foodspider.exception.FoodItemInUseExcepiton;
+import com.foodspider.exception.FoodItemInUseException;
 import com.foodspider.exception.MissingFoodItemException;
 import com.foodspider.model.FoodItem;
 import java.util.UUID;
@@ -14,7 +14,7 @@ public class FoodItemService extends ServiceBase<FoodItem> {
             throw new MissingFoodItemException("Missing food item");
         }
         if (!foodItem.getOrders().isEmpty()) {
-            throw new FoodItemInUseExcepiton(foodItem.getName() + " is used in some orders... you cannot delete it");
+            throw new FoodItemInUseException(foodItem.getName() + " is used in some orders... you cannot delete it");
         }
         getRepo().deleteById(id);
     }

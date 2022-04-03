@@ -82,3 +82,4 @@ buildNumber.properties
 food-spider-ui/.DS_Store
 .DS_Store
 food-spider-ui/package-lock.json
+/src/main/resources/application.properties
