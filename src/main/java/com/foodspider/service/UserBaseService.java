@@ -9,10 +9,7 @@ import com.foodspider.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserBaseService extends ServiceBase<UserBase> {
@@ -85,6 +82,9 @@ public class UserBaseService extends ServiceBase<UserBase> {
             orders = orders.stream().filter(i -> i.getOrderStatus()
                     .equals(OrderStatusEnum.values()[filter])).toList();
         }
+        orders = orders.stream().sorted(Comparator.comparing(Order::getOrderStatus)
+                        .thenComparing(i -> i.getRestaurant().getName())
+                        .thenComparing(i -> i.getCustomer().getFirstName())).toList();
         return new ArrayList<>(orders.stream().map(i -> new NarrowedOrder(){{
             id = i.getId();
             foodItems = new ArrayList<>(i.getFoodItems().stream().map(j -> new NarrowedFoodItem(){{

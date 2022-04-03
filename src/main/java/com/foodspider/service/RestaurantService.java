@@ -7,6 +7,7 @@ import com.foodspider.model.narrowed_model.NarrowedRestaurant;
 import com.foodspider.validator.FoodValidator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.UUID;
 
 public class RestaurantService extends ServiceBase<Restaurant> {
@@ -44,6 +45,7 @@ public class RestaurantService extends ServiceBase<Restaurant> {
         if (filter != null) {
             restaurants = restaurants.stream().filter(i -> i.name.toLowerCase().contains(filter)).toList();
         }
+        restaurants = restaurants.stream().sorted(Comparator.comparing(i -> i.name)).toList();
         return new ArrayList<>(restaurants);
     }
 }
