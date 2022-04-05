@@ -3,6 +3,7 @@ package com.foodspider.controller;
 import com.foodspider.exception.InvalidOrderChangeException;
 import com.foodspider.exception.InvalidUserException;
 import com.foodspider.exception.MissingCustomerException;
+import com.foodspider.exception.MissingFoodItemException;
 import com.foodspider.model.narrowed_model.NarrowedOrder;
 import com.foodspider.model.request_model.AddOrderRequest;
 import com.foodspider.model.request_model.ChangeStatusToOrderRequest;
@@ -78,7 +79,7 @@ public class OrderController extends ControllerBase {
     public ResponseEntity<ResponseBase> placeOrder(@RequestBody AddOrderRequest request) {
         try {
             orderService.tryAddOrder(request.restaurantId, request.userId, request.foodItems);
-        } catch (MissingCustomerException ex) {
+        } catch (MissingCustomerException | MissingFoodItemException ex) {
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());

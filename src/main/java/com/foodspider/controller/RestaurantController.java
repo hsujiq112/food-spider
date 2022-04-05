@@ -1,6 +1,5 @@
 package com.foodspider.controller;
 
-import com.foodspider.exception.InvalidFoodItemException;
 import com.foodspider.exception.InvalidRestaurantException;
 import com.foodspider.exception.MissingAdministratorException;
 import com.foodspider.model.Administrator;
@@ -8,8 +7,6 @@ import com.foodspider.model.FoodItem;
 import com.foodspider.model.Restaurant;
 import com.foodspider.model.narrowed_model.NarrowedFoodItem;
 import com.foodspider.model.narrowed_model.NarrowedRestaurant;
-import com.foodspider.model.narrowed_model.NarrowedUser;
-import com.foodspider.model.request_model.AddFoodToCategoryRequest;
 import com.foodspider.model.request_model.AddRestaurantRequest;
 import com.foodspider.model.response_model.*;
 import com.foodspider.service.AdministratorService;

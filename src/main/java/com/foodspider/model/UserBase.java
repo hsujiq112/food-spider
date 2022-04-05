@@ -35,15 +35,6 @@ public class UserBase extends BaseModel {
         this.password = Encryptor.encrypt(getId(), password);
     }
 
-    public UserBase(UUID userId, String emailAddress, String firstName, String lastName, String username, String password) {
-        this.setId(userId);
-        this.emailAddress = emailAddress;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.username = username;
-        this.password = password;
-    }
-
     public UserBase() {
 
     }

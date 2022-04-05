@@ -2,6 +2,7 @@ package com.foodspider.service;
 
 import com.foodspider.exception.InvalidOrderChangeException;
 import com.foodspider.exception.MissingCustomerException;
+import com.foodspider.exception.MissingFoodItemException;
 import com.foodspider.model.Order;
 import com.foodspider.model.OrderStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class OrderService extends ServiceBase<Order> {
         var user = customerService.getByID(userId);
         if (user == null) {
             throw new MissingCustomerException("Customer not found");
+        }
+        if (foodItems == null || foodItems.isEmpty()) {
+            throw new MissingFoodItemException("An order cannot have 0 food items!");
         }
         var fullFoodItems = foodItems.stream()
                 .map(i -> foodItemService.getByID(i)).toList();

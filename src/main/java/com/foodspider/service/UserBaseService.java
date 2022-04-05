@@ -84,7 +84,10 @@ public class UserBaseService extends ServiceBase<UserBase> {
         }
         orders = orders.stream().sorted(Comparator.comparing(Order::getOrderStatus)
                         .thenComparing(i -> i.getRestaurant().getName())
-                        .thenComparing(i -> i.getCustomer().getFirstName())).toList();
+                        .thenComparing(i -> i.getCustomer().getFirstName())
+                        .thenComparing(i -> i.getFoodItems().stream()
+                                .mapToDouble(FoodItem::getPrice).sum()))
+                        .toList();
         return new ArrayList<>(orders.stream().map(i -> new NarrowedOrder(){{
             id = i.getId();
             foodItems = new ArrayList<>(i.getFoodItems().stream().map(j -> new NarrowedFoodItem(){{

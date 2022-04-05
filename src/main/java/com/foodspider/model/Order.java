@@ -1,6 +1,5 @@
 package com.foodspider.model;
 
-import com.foodspider.model.narrowed_model.NarrowedFoodItem;
 import lombok.Getter;
 import lombok.Setter;
 
