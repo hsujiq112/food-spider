@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -49,5 +50,23 @@ public class Restaurant extends BaseModel {
 
     public Restaurant() {
 
+    }
+
+    @Override
+    public String toString() {
+        var ref = new Object() {
+            String restaurantString = "";
+        };
+        ref.restaurantString += "Restaurant name: " + name + '\r';
+        ref.restaurantString += "Restaurant location: " + location + '\r';
+        ref.restaurantString += "Restaurant delivery zones: " + deliveryZones + '\r';
+        var foodItemsGrouped = foodItems.stream().collect(Collectors.groupingBy(FoodItem::getCategory));
+        ref.restaurantString += "Menu:\r\r";
+        foodItemsGrouped.forEach((k, v) -> {
+            ref.restaurantString += "  " + k.toString();
+            v.forEach(i -> ref.restaurantString += "\r    " + i.toString());
+            ref.restaurantString += "\r\r";
+        });
+        return ref.restaurantString;
     }
 }

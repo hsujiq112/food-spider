@@ -26,9 +26,15 @@ export class NewOrderDialogComponent implements OnInit {
     isForView: true
   }
 
+  orderDetailsForm: FormGroup;
+
   ngOnInit(): void {
     this.dialogData.foodItems = this.data.foodItems;
     this.dialogData.isForView = this.data.isForView;
+    this.orderDetailsForm = this.formBuilder.group({
+      address: ['', [Validators.required]],
+      specialDetails: ['']
+    });
   }
 
   get computePrice(): number {
@@ -42,11 +48,27 @@ export class NewOrderDialogComponent implements OnInit {
   }
 
   order(): void {
+    this.orderDetailsForm.markAllAsTouched();
+    if(!this.orderDetailsForm.valid) {
+      this.service.openSnackBar("ERROR: Please fix the issues before pressing the button", "OK");
+      return;
+    }
     if (this.dialogData.foodItems.length === 0) {
       this.service.openSnackBar("You cannot place an order with 0 items", "Oh :(");
       return;
     }
     var request = new AddOrderRequest();
+    for (const field in this.orderDetailsForm.controls) {
+      const control = this.orderDetailsForm.get(field); 
+      switch(field) {
+        case "address":
+          request.address = control?.value;
+          break;
+        case "specialDetails":
+          request.specialDetails = control?.value;
+          break;
+      }
+    }
     request.foodItems = this.dialogData.foodItems.map(i => i.id);
     this.dialogRef.close(request);
   }

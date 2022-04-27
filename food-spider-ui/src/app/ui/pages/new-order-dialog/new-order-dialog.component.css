@@ -18,3 +18,7 @@ mat-card {
     border: none;
     background: none;
 }
+
+form {
+    padding-top: 20px;
+}

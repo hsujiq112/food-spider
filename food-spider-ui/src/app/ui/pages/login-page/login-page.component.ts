@@ -144,7 +144,7 @@ export class LoginPageComponent implements OnInit {
             registerRequest.password = control?.value;
             break;
           case "isAdmin":
-            registerRequest.isAdmin = control?.value == '' ? false : control?.value;
+            registerRequest.isAdmin = control?.value == '' || control?.value == undefined ? false : control?.value;
             break;
         }
       }

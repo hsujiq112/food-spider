@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Inject, Injectable, Input, OnChanges, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Inject, Injectable, Input, OnChanges, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { SharedService } from 'src/app/shared.service';
 import { MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -32,6 +32,7 @@ export class MyRestaurantComponent implements OnInit, OnChanges {
   potentialOrderFoodItems: Array<NarrowedFoodItem> = new Array<NarrowedFoodItem>();
   @Input() displayType: DisplayEmitter;
   @Output() buttonPressed = new EventEmitter<MouseEvent>();
+  @ViewChild('content') content: ElementRef;
 
   get categoriesToShowText(): Array<string> {
     var categoriesText: Array<string> = [];
@@ -333,6 +334,10 @@ export class MyRestaurantComponent implements OnInit, OnChanges {
         }
       });
     });
+  }
+
+  exportAsPDF(): void {
+    window.open(this.service.exportAsPDF(this.restaurantID));
   }
 
 }

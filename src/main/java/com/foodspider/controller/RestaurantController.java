@@ -11,13 +11,19 @@ import com.foodspider.model.request_model.AddRestaurantRequest;
 import com.foodspider.model.response_model.*;
 import com.foodspider.service.AdministratorService;
 import com.foodspider.service.RestaurantService;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -119,6 +125,20 @@ public class RestaurantController extends ControllerBase {
                 categories = admin.getRestaurant().getCategories();
             }};
         }});
+    }
+
+    @GetMapping("/exportAsPDF/{restaurantID}")
+    public ResponseEntity<byte[]> exportAsPDF(@PathVariable UUID restaurantID) {
+        byte[] pdfBinary;
+        Map.Entry<ByteArrayOutputStream, String> pdf;
+        try {
+            pdf = restaurantService.createPDF(restaurantID);
+            pdfBinary = pdf.getKey().toByteArray();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return createBinaryResponse(pdfBinary, "application/pdf", pdf.getValue() + ".pdf");
     }
 
 }

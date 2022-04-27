@@ -2,7 +2,9 @@ package com.foodspider.controller;
 
 import com.foodspider.model.response_model.EmptyResponse;
 import com.foodspider.model.response_model.ResponseBase;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 public abstract class ControllerBase {
@@ -20,6 +22,13 @@ public abstract class ControllerBase {
 
     public ResponseEntity<ResponseBase> createEmptyResponse() {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new EmptyResponse());
+    }
+
+    public ResponseEntity<byte[]> createBinaryResponse(byte[] binary, String contentType, String fileName) {
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(contentType));
+        headers.setContentDispositionFormData(fileName, fileName);
+        return new ResponseEntity<byte[]>(binary, headers, HttpStatus.OK);
     }
 
 

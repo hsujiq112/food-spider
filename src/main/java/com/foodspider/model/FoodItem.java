@@ -47,4 +47,11 @@ public class FoodItem extends BaseModel {
     public FoodItem() {
 
     }
+
+    @Override
+    public String toString() {
+        return "name='" + name + "'" +
+                ", description='" + description + "'" +
+                ", price=" + price;
+    }
 }

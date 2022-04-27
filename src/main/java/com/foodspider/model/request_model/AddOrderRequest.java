@@ -7,4 +7,6 @@ public class AddOrderRequest extends RequestBase {
     public List<UUID> foodItems;
     public UUID userId;
     public UUID restaurantId;
+    public String address;
+    public String specialDetails;
 }

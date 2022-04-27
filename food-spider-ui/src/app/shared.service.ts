@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AddRestaurantResponse, GetOrdersByUserIDResponse, GetRestaurantByAdminIDResponse, GetRestaurantsResponse, LoginResponse, MenuItemsResponse, ResponseBase } from './response-base';
-import { NarrowedResaurant, UserModel } from './api-model';
+import { UserModel } from './api-model';
 import { AddFoodItemRequest, AddOrderRequest, AddRestaurantRequest, ChangeStatusToOrderRequest, GetOrdersCountByUserIDResponse, LoginRequest, RegisterRequest } from './request-base';
 
 
@@ -86,6 +86,10 @@ export class SharedService {
 
   changeStatusToOrder(request: ChangeStatusToOrderRequest) {
     return this.http.patch<ResponseBase>(this.APIUrl + '/changeStatusToOrder', request, {observe: 'response'});
+  }
+
+  exportAsPDF(restaurantID: string): string {
+    return this.APIUrl + '/exportAsPDF/' + restaurantID;
   }
   
 }

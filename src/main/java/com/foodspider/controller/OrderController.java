@@ -78,7 +78,7 @@ public class OrderController extends ControllerBase {
     @PostMapping("/placeOrder")
     public ResponseEntity<ResponseBase> placeOrder(@RequestBody AddOrderRequest request) {
         try {
-            orderService.tryAddOrder(request.restaurantId, request.userId, request.foodItems);
+            orderService.tryAddOrder(request);
         } catch (MissingCustomerException | MissingFoodItemException ex) {
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {

@@ -94,3 +94,7 @@ mat-card-actions {
     letter-spacing: 3px;
     font-size: large;
 }
+
+mat-toolbar {
+    justify-content: space-between;
+}

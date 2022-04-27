@@ -1,64 +1,67 @@
-<div *ngIf="displayTypeAsNumber() === 0">
-    <mat-toolbar>
-        <div class="flex-center">
-            <button mat-mini-fab class="primary" routerLink="/landing-page">
+<div #content>
+    <div *ngIf="displayTypeAsNumber() === 0">
+        <mat-toolbar>
+            <div class="flex-center">
+                <button mat-mini-fab class="primary" routerLink="/landing-page">
+                    <mat-icon>keyboard_arrow_left</mat-icon>
+                </button>
+                <span class="padding-left">
+                    My Restaurant page
+                </span>
+            </div>
+            <button mat-button *ngIf="displayTypeAsNumber() === 0" (click)="exportAsPDF()">Export as PDF</button>
+        </mat-toolbar>
+    </div>
+    <div class="content">
+        <div class="flex-wrap-space-between" *ngIf="displayTypeAsNumber() != 0">
+            <button mat-flat-button (click)="destroyChild($event)">
                 <mat-icon>keyboard_arrow_left</mat-icon>
+                Exit Restaurant
             </button>
-            <span class="padding-left">
-                My Restaurant page
-            </span>
+            <button *ngIf="displayTypeAsNumber() === 2" mat-icon-button (click)="showOrderPopup()">
+                <mat-icon class="icon-margins" matBadge="{{potentialOrderFoodItems.length}}" matBadgeColor="warn">shopping_cart</mat-icon>
+            </button>
         </div>
-    </mat-toolbar>
-</div>
-<div class="content">
-    <div class="flex-wrap-space-between" *ngIf="displayTypeAsNumber() != 0">
-        <button mat-flat-button (click)="destroyChild($event)">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-            Exit Restaurant
-        </button>
-        <button *ngIf="displayTypeAsNumber() === 2" mat-icon-button (click)="showOrderPopup()">
-            <mat-icon class="icon-margins" matBadge="{{potentialOrderFoodItems.length}}" matBadgeColor="warn">shopping_cart</mat-icon>
-        </button>
-    </div>
-    <div class="button-wrapper">
-        <div *ngFor="let category of categoriesToShowText">
-            <button mat-button (click)="redirectPageTo(category)">{{category}}</button>
-        </div>
-    </div>
-    <div *ngFor="let category of categoriesToShowText; let i = index">
-        <div id="{{category}}" class="flex-wrap-space-between category-background">
-            <div class="category">
-                {{category}}
-            </div>
-            <button *ngIf="displayTypeAsNumber() === 0" mat-button (click)="addFoodItem(i)">Add food item </button>
-        </div>
-        <mat-divider horizontal></mat-divider>
-        <div fxLayout="row wrap" fxLayoutGap="16px grid" class="justify-center wrap padding-top-bottom">
-            <div *ngFor="let element of tableSourceByCategory(i)" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
-                <mat-card class="mat-elevation-z4">
-                    <mat-card-header>
-                        <div class="narrowed-width">
-                            <mat-card-title>
-                                {{element.name}}
-                            </mat-card-title>
-                            <mat-card-subtitle style="color: rgb(10, 90, 136);">
-                                {{element.price}} RON
-                            </mat-card-subtitle>
-                        </div>
-                    </mat-card-header>
-                    <img mat-card-image src="{{element.imageLink}}" class="col-image">
-                    <mat-card-content>
-                        {{element.description}}
-                    </mat-card-content>
-                    <mat-card-actions *ngIf="displayTypeAsNumber() === 2" (click)="addItemForPotentialOrder(element)">
-                        <button mat-button>Add to cart</button>
-                    </mat-card-actions>
-                    <mat-card-actions *ngIf="displayTypeAsNumber() === 0" (click)="remove(element)">
-                        <button mat-button>Remove food</button>
-                    </mat-card-actions>
-                </mat-card>
+        <div class="button-wrapper">
+            <div *ngFor="let category of categoriesToShowText">
+                <button mat-button (click)="redirectPageTo(category)">{{category}}</button>
             </div>
         </div>
+        <div *ngFor="let category of categoriesToShowText; let i = index">
+            <div id="{{category}}" class="flex-wrap-space-between category-background">
+                <div class="category">
+                    {{category}}
+                </div>
+                <button *ngIf="displayTypeAsNumber() === 0" mat-button (click)="addFoodItem(i)">Add food item </button>
+            </div>
+            <mat-divider horizontal></mat-divider>
+            <div fxLayout="row wrap" fxLayoutGap="16px grid" class="justify-center wrap padding-top-bottom">
+                <div *ngFor="let element of tableSourceByCategory(i)" fxFlex="33.33%" fxFlex.xs="100%" fxFlex.sm="50%">
+                    <mat-card class="mat-elevation-z4">
+                        <mat-card-header>
+                            <div class="narrowed-width">
+                                <mat-card-title>
+                                    {{element.name}}
+                                </mat-card-title>
+                                <mat-card-subtitle style="color: rgb(10, 90, 136);">
+                                    {{element.price}} RON
+                                </mat-card-subtitle>
+                            </div>
+                        </mat-card-header>
+                        <img mat-card-image src="{{element.imageLink}}" class="col-image">
+                        <mat-card-content>
+                            {{element.description}}
+                        </mat-card-content>
+                        <mat-card-actions *ngIf="displayTypeAsNumber() === 2" (click)="addItemForPotentialOrder(element)">
+                            <button mat-button>Add to cart</button>
+                        </mat-card-actions>
+                        <mat-card-actions *ngIf="displayTypeAsNumber() === 0" (click)="remove(element)">
+                            <button mat-button>Remove food</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <!-- {{tableSource | json}} -->
     </div>
-    <!-- {{tableSource | json}} -->
 </div>

@@ -6,7 +6,7 @@
 </ng-template>
 
 <div *ngFor="let element of dialogData.foodItems; let i = index">
-    <mat-card >
+    <mat-card>
         <mat-card-title-group>
             <mat-card-title>
                 {{element.name}}
@@ -25,6 +25,29 @@
       </mat-card>
 </div>
 
+<form [formGroup]="orderDetailsForm" *ngIf="!dialogData.isForView">
+    <mat-form-field>
+        <mat-label for="address">
+        Address
+        </mat-label>
+        <input matInput placeholder="Address" id="address" type="text" formControlName="address">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label for="specialDetails">
+            Special Details
+        </mat-label>
+        <input matInput placeholder="Special Details" id="specialDetails" type="text" formControlName="specialDetails">
+        <mat-error>Required Field</mat-error>
+    </mat-form-field>
+</form>
+
+<!-- is it needed? -->
+<!-- <div *ngIf="dialogData.isForView">
+    <h3>Address: </h3>
+    <h3>Special Details: </h3>
+</div> -->
+    
 <mat-dialog-actions class="space-between">
     <button *ngIf="!dialogData.isForView" [ngClass]="{'red-button': dialogData.foodItems.length === 0}" mat-raised-button (click)="order()">Place Order</button>
     <button mat-raised-button (click)="close()">Close</button>
