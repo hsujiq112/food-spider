@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static com.foodspider.controller.ControllerBase.LOGGER;
+
 // used mainly for testing... no real use-case found for web app
 @RestController
 public class UserController {
@@ -23,21 +25,27 @@ public class UserController {
     public ResponseEntity<Object> get() {
         var users = new ArrayList<UserBase>();
         try {
-             users = userService.dbSet();
+            LOGGER.debug("Getting users");
+            users = userService.dbSet();
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
         }
+        LOGGER.info("Users got successfully");
         return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
         try {
+            LOGGER.debug("Deleting user by id: " + id);
             var userID = UUID.fromString(id);
             userService.deleteByID(userID);
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
+        LOGGER.info("Users deleted successfully");
         return ResponseEntity.status(HttpStatus.OK).body("Successfully deleted the user");
     }
 

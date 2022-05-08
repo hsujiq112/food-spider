@@ -36,6 +36,14 @@ public class FoodSpiderApplication implements WebMvcConfigurer{
     public RestaurantService restaurantService() {
         return new RestaurantService();
     }
+    @Bean(name = "mService")
+    public MailService mailService() {
+        return new MailService();
+    }
+    @Bean(name = "pdfService")
+    public PDFService pdfService() {
+        return new PDFService();
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

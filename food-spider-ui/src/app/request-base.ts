@@ -73,11 +73,15 @@ export class AddOrderRequest {
         this.userId = '';
         this.restaurantId = '';
         this.foodItems = new Array<string>();
+        this.address = '';
+        this.specialDetails = '';
     }
     
     public userId: string;
     public restaurantId: string;
     public foodItems: Array<string>;
+    public address: string;
+    public specialDetails: string;
 }
 
 export class GetOrdersCountByUserIDResponse {

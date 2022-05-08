@@ -2,10 +2,13 @@ package com.foodspider.controller;
 
 import com.foodspider.model.response_model.EmptyResponse;
 import com.foodspider.model.response_model.ResponseBase;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
+import org.slf4j.Logger;
 
 public abstract class ControllerBase {
 
@@ -28,8 +31,10 @@ public abstract class ControllerBase {
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(contentType));
         headers.setContentDispositionFormData(fileName, fileName);
-        return new ResponseEntity<byte[]>(binary, headers, HttpStatus.OK);
+        return new ResponseEntity<>(binary, headers, HttpStatus.OK);
     }
+
+    static final Logger LOGGER = LoggerFactory.getLogger(ControllerBase.class);
 
 
 }

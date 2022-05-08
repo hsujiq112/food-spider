@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * The User base service.
+ */
 @Service
 public class UserBaseService extends ServiceBase<UserBase> {
 
@@ -19,13 +22,28 @@ public class UserBaseService extends ServiceBase<UserBase> {
     @Autowired
     private CustomerService customerService;
 
-    public Optional<UserBase> findByUsername(String username) {
+    /**
+     * Find by username.
+     *
+     * @param username the username
+     * @return the optional userBase
+     */
+    public Optional<UserBase> getByUsername(String username) {
         return getRepo().findAll().stream()
                 .filter(i -> i.getUsername().equals(username)).findFirst();
     }
 
+    /**
+     * Try login.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the user base
+     * @throws InvalidUserException in case the credentials fail
+     * @throws Exception            general exception
+     */
     public UserBase tryLogin(String username, String password) throws InvalidUserException, Exception {
-        var user = findByUsername(username)
+        var user = getByUsername(username)
                 .orElseThrow(() -> new InvalidUserException("Username or Password is incorrect"));
         var passwordDecrypted = Encryptor.decrypt(user.getId(), user.getPassword());
         if (!password.equals(passwordDecrypted)) {
@@ -34,8 +52,25 @@ public class UserBaseService extends ServiceBase<UserBase> {
         return user;
     }
 
-    public UserBase tryRegister(String emailAddress, String firstName, String lastName,
-                                String username, String password, Boolean isAdmin) throws InvalidUserException, Exception {
+    /**
+     * Try register user base.
+     *
+     * @param emailAddress the email address
+     * @param firstName    the first name
+     * @param lastName     the last name
+     * @param username     the username
+     * @param password     the password
+     * @param isAdmin      the is admin
+     * @return the newly added user that has been added to the database
+     * @throws InvalidUserException in case the validation fails
+     * @throws Exception            general exception
+     */
+    public UserBase tryRegister(String emailAddress,
+                                String firstName,
+                                String lastName,
+                                String username,
+                                String password,
+                                Boolean isAdmin) throws InvalidUserException, Exception {
         UserValidator.validateUser(emailAddress, firstName, lastName, username, password);
         if (isAdmin) {
             var admin = new Administrator(emailAddress, firstName, lastName, username, password);
@@ -45,7 +80,15 @@ public class UserBaseService extends ServiceBase<UserBase> {
         return add(customer);
     }
 
-    public GetOrdersCountByUserIDResponse getOrdersCountByUserID(UUID id, Boolean isAdmin) {
+    /**
+     * Gets orders count by user id.
+     *
+     * @param id      the user id
+     * @param isAdmin if the user is an admin
+     * @return the orders count by user id
+     */
+    public GetOrdersCountByUserIDResponse getOrdersCountByUserID(UUID id,
+                                                                 Boolean isAdmin) {
         List<Order> orders;
         if (isAdmin) {
             var restaurant = administratorService.getByID(id).getRestaurant();
@@ -67,7 +110,17 @@ public class UserBaseService extends ServiceBase<UserBase> {
         }};
     }
 
-    public List<NarrowedOrder> getOrdersByUserID(UUID id, Boolean isAdmin, Integer filter) {
+    /**
+     * Gets orders by user id.
+     *
+     * @param id      the user id
+     * @param isAdmin if the user is an admin
+     * @param filter  the order status filter
+     * @return the orders filtered
+     */
+    public List<NarrowedOrder> getOrdersByUserID(UUID id,
+                                                 Boolean isAdmin,
+                                                 Integer filter) {
         List<Order> orders;
         if (isAdmin) {
             var restaurant = administratorService.getByID(id).getRestaurant();

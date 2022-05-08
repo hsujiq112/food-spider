@@ -33,12 +33,17 @@ public class OrderController extends ControllerBase {
                                                        @PathVariable Boolean isAdmin) {
         var response = new GetOrdersCountByUserIDResponse();
         try {
+            LOGGER.debug("counting all orders for userId " + id);
             response = userBaseService.getOrdersCountByUserID(id, isAdmin);
         } catch (InvalidUserException ex) {
-          return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+            LOGGER.error(ex.getMessage());
+            return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully counted orders; pending orders: " + response.pendingOrders
+                + " , placed orders: " + response.placedOrders);
         return createOKResponse(response);
     }
 
@@ -47,12 +52,16 @@ public class OrderController extends ControllerBase {
                                                   @PathVariable Boolean isAdmin) {
         List<NarrowedOrder> narrowedOrders;
         try {
+            LOGGER.debug("getting all orders by userID... " + id);
             narrowedOrders = userBaseService.getOrdersByUserID(id, isAdmin, -1);
         } catch (InvalidUserException ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully got all orders");
         return createOKResponse(new GetOrdersByUserIDResponse(){{
             orders = narrowedOrders;
         }});
@@ -64,12 +73,16 @@ public class OrderController extends ControllerBase {
                                                           @PathVariable Integer filter) {
         List<NarrowedOrder> narrowedOrders;
         try {
+            LOGGER.debug("getting filtered orders with filter  " + filter);
             narrowedOrders = userBaseService.getOrdersByUserID(id, isAdmin, filter);
         } catch (InvalidUserException ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully got all orders filtered with filter " + filter);
         return createOKResponse(new GetOrdersByUserIDResponse(){{
             orders = narrowedOrders;
         }});
@@ -78,24 +91,33 @@ public class OrderController extends ControllerBase {
     @PostMapping("/placeOrder")
     public ResponseEntity<ResponseBase> placeOrder(@RequestBody AddOrderRequest request) {
         try {
+            LOGGER.debug("Placing order for user " + request.userId);
             orderService.tryAddOrder(request);
         } catch (MissingCustomerException | MissingFoodItemException ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully placed order for user" + request.userId);
         return createEmptyResponse();
     }
 
     @PatchMapping("/changeStatusToOrder")
     public ResponseEntity<ResponseBase> changeStatusToOrder(@RequestBody ChangeStatusToOrderRequest changeStatusToOrderRequest) {
         try {
+            LOGGER.debug("changing status to order " + changeStatusToOrderRequest.orderID
+                    + " to " + changeStatusToOrderRequest.status + "...");
             orderService.changeStatusToOrder(changeStatusToOrderRequest.orderID, changeStatusToOrderRequest.status);
         } catch (InvalidOrderChangeException ex) {
-          return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+            LOGGER.error(ex.getMessage());
+            return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully changed status to order " + changeStatusToOrderRequest.status);
         return createEmptyResponse();
     }
 }

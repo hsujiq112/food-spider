@@ -25,26 +25,33 @@ public class FoodItemController extends ControllerBase {
     @PostMapping("/addFoodToCategory")
     public ResponseEntity<ResponseBase> addFoodToCategory(@RequestBody AddFoodToCategoryRequest request) {
         try {
+            LOGGER.debug("Adding food to restaurant");
             restaurantService.addFoodToRestaurant(request.restaurantID, request.foodName, request.foodDescription,
                     request.price, request.categoryEnum, request.foodImageLink);
         } catch (InvalidFoodItemException ex) {
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
         catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully added the food to restaurant: " + request.foodName);
         return createEmptyResponse();
     }
 
     @DeleteMapping("/foodItem/{id}")
     public ResponseEntity<ResponseBase> delete(@PathVariable UUID id) {
         try {
+            LOGGER.debug("Deleting food by id " + id);
             foodItemService.deleteByID(id);
         } catch (MissingFoodItemException | FoodItemInUseException ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully deleted from restaurant foodItem with id " + id);
         return createEmptyResponse();
     }
 }

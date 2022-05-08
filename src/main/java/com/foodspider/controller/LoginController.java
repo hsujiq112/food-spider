@@ -26,12 +26,16 @@ public class LoginController extends ControllerBase {
     public ResponseEntity<ResponseBase> login(@RequestBody LoginRequest loginRequest) {
         UserBase user;
         try {
+            LOGGER.debug("Logging in user...");
             user = userService.tryLogin(loginRequest.username, loginRequest.password);
         } catch (InvalidUserException ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully logged in user " + loginRequest.username);
         return createOKResponse(new LoginResponse(){{
             isAdmin = user instanceof Administrator;
             userBase = new NarrowedUser(){{
@@ -48,13 +52,17 @@ public class LoginController extends ControllerBase {
     @PostMapping("/register")
     public ResponseEntity<ResponseBase> register(@RequestBody RegisterRequest registerRequest) {
         try {
+            LOGGER.debug("registering new user...");
             userService.tryRegister(registerRequest.emailAddress, registerRequest.firstName,
                     registerRequest.lastName, registerRequest.username, registerRequest.password, registerRequest.isAdmin);
         } catch (InvalidUserException ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
         }
+        LOGGER.info("Successfully registered user " + registerRequest.username);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }

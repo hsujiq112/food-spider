@@ -1,0 +1,10 @@
+com.foodspider
+com.foodspider.controller
+com.foodspider.exception
+com.foodspider.model
+com.foodspider.model.narrowed_model
+com.foodspider.model.request_model
+com.foodspider.model.response_model
+com.foodspider.repository
+com.foodspider.service
+com.foodspider.validator
