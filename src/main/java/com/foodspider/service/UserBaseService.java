@@ -6,6 +6,7 @@ import com.foodspider.model.narrowed_model.NarrowedFoodItem;
 import com.foodspider.model.narrowed_model.NarrowedOrder;
 import com.foodspider.model.response_model.GetOrdersCountByUserIDResponse;
 import com.foodspider.validator.UserValidator;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,10 @@ import java.util.*;
 @Service
 public class UserBaseService extends ServiceBase<UserBase> {
 
+    @Setter
     @Autowired
     private AdministratorService administratorService;
+    @Setter
     @Autowired
     private CustomerService customerService;
 

@@ -34,9 +34,11 @@ public class AdministratorService extends ServiceBase<Administrator> {
                                                  String restaurantDeliveryZones,
                                                  List<Integer> categories) {
         var restaurant = new Restaurant(restaurantName, restaurantLocation, restaurantDeliveryZones, categories);
-        RestaurantValidator.validateRestaurant(restaurantName, restaurantLocation, restaurantDeliveryZones);
-        var admin = getRepo().findById(adminID)
-                .orElseThrow(() -> new MissingAdministratorException("Administrator not found"));
+        RestaurantValidator.validateRestaurant(restaurantName, restaurantLocation, restaurantDeliveryZones, categories);
+        var admin = getRepo().getById(adminID);
+        if (admin == null) {
+            throw new MissingAdministratorException("Administrator not found");
+        }
         admin.setRestaurant(restaurant);
         restaurant.setAdministrator(admin);
         return getRepo().save(admin);
@@ -44,14 +46,16 @@ public class AdministratorService extends ServiceBase<Administrator> {
 
 
     /**
-     * Gets food items by user id.
+     * Gets the restaurant by user id.
      *
      * @param id the user id
-     * @return the food items found for the restaurant
+     * @return the restaurant found for the restaurant
      */
-    public Restaurant getFoodItemsByRestaurantID(UUID id) {
-        var admin = getRepo().findById(id)
-                .orElseThrow(() -> new MissingAdministratorException("Administrator not found"));
+    public Restaurant getRestaurantByAdminID(UUID id) {
+        var admin = getRepo().getById(id);
+        if (admin == null) {
+            throw new MissingAdministratorException("Administrator not found");
+        }
         return admin.getRestaurant();
     }
 }

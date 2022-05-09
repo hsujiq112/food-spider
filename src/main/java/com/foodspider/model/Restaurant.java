@@ -51,6 +51,20 @@ public class Restaurant extends BaseModel {
         this.orders = new ArrayList<>();
     }
 
+    public Restaurant(UUID restaurantID,
+                      String name,
+                      String location,
+                      String deliveryZones,
+                      List<Integer> categories) {
+        this.setId(restaurantID);
+        this.name = name;
+        this.location = location;
+        this.deliveryZones = deliveryZones;
+        this.categories = categories;
+        this.foodItems = new ArrayList<>();
+        this.orders = new ArrayList<>();
+    }
+
     public Restaurant() {
 
     }

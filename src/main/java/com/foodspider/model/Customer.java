@@ -6,6 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,6 +21,16 @@ public class Customer extends UserBase {
                     String username,
                     String password) throws Exception {
         super(emailAddress, firstName, lastName, username, password);
+        orders = new ArrayList<>();
+    }
+
+    public Customer(UUID customerID,
+                    String emailAddress,
+                    String firstName,
+                    String lastName,
+                    String username,
+                    String password) throws Exception {
+        super(customerID, emailAddress, firstName, lastName, username, password);
         orders = new ArrayList<>();
     }
 

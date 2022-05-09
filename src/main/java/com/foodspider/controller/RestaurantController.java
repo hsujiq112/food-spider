@@ -96,7 +96,7 @@ public class RestaurantController extends ControllerBase {
         Restaurant restaurant;
         try {
             LOGGER.debug("Getting admin's restaurant... adminId: " + id);
-            restaurant = administratorService.getFoodItemsByRestaurantID(id);
+            restaurant = administratorService.getRestaurantByAdminID(id);
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
             return createErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());

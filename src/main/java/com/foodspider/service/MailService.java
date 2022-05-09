@@ -4,6 +4,7 @@ import com.foodspider.model.Customer;
 import com.foodspider.model.FoodItem;
 import com.foodspider.model.Restaurant;
 import com.foodspider.model.request_model.AddOrderRequest;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.*;
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
  */
 public class MailService {
 
+    @Setter
     @Autowired
     private FoodItemService foodItemService;
 
@@ -26,7 +28,7 @@ public class MailService {
      * @param request the order request
      * @param user the customer from whom to send the email
      * @param restaurant the admin's restaurant
-     * @throws Exception in case the mail cannot be sent
+     * @throws MessagingException in case the mail cannot be sent
      */
     public void sendMail(AddOrderRequest request,
                           Customer user,
@@ -57,7 +59,7 @@ public class MailService {
      * @param user          the customer from whom to send the email
      * @param restaurant    the admin's restaurant
      * @return the MimeMessage to be sent
-     * @throws Exception in case the smtp credentials are incorrect
+     * @throws MessagingException in case the smtp credentials are incorrect
      */
     private MimeMessage createMailContents(AddOrderRequest request,
                                       Session session,

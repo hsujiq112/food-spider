@@ -6,6 +6,7 @@ import com.foodspider.exception.MissingFoodItemException;
 import com.foodspider.model.Order;
 import com.foodspider.model.OrderStatusEnum;
 import com.foodspider.model.request_model.AddOrderRequest;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
@@ -16,11 +17,15 @@ import java.util.UUID;
 public class OrderService extends ServiceBase<Order> {
 
     @Autowired
+    @Setter
     private CustomerService customerService;
+    @Setter
     @Autowired
     private FoodItemService foodItemService;
+    @Setter
     @Autowired
     private RestaurantService restaurantService;
+    @Setter
     @Autowired
     private MailService mailService;
 

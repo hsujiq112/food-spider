@@ -32,7 +32,8 @@ public class Order extends BaseModel {
             inverseJoinColumns = @JoinColumn(name = "food_item_id"))
     private List<FoodItem> foodItems;
 
-    public Order(OrderStatusEnum orderStatus, List<FoodItem> foodItem) {
+    public Order(OrderStatusEnum orderStatus,
+                 List<FoodItem> foodItem) {
         this.setId(UUID.randomUUID());
         this.orderStatus = orderStatus;
         this.foodItems = foodItem;
@@ -43,15 +44,28 @@ public class Order extends BaseModel {
         this.orderStatus = orderStatus;
     }
 
-    public Order() {
-
-    }
-
-    public Order(Restaurant restaurant, Customer customer, List<FoodItem> foodItems) {
+    public Order(Restaurant restaurant,
+                 Customer customer,
+                 List<FoodItem> foodItems) {
         this.setId(UUID.randomUUID());
         this.customer = customer;
         this.foodItems = foodItems;
         this.restaurant = restaurant;
         this.orderStatus = OrderStatusEnum.PENDING;
+    }
+
+    public Order(UUID orderID,
+                 Restaurant restaurant,
+                 Customer customer,
+                 List<FoodItem> foodItems) {
+        this.setId(orderID);
+        this.customer = customer;
+        this.foodItems = foodItems;
+        this.restaurant = restaurant;
+        this.orderStatus = OrderStatusEnum.PENDING;
+    }
+
+    public Order() {
+
     }
 }

@@ -24,6 +24,15 @@ public class Administrator extends UserBase {
         super(emailAddress, firstName, lastName, username, password);
     }
 
+    public Administrator(UUID administratorID,
+                         String emailAddress,
+                         String firstName,
+                         String lastName,
+                         String username,
+                         String password) throws Exception {
+        super(administratorID, emailAddress, firstName, lastName, username, password);
+    }
+
     public Administrator() {
 
     }
