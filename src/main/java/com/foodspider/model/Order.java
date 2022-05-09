@@ -38,6 +38,11 @@ public class Order extends BaseModel {
         this.foodItems = foodItem;
     }
 
+    public Order(OrderStatusEnum orderStatus) {
+        this.setId(UUID.randomUUID());
+        this.orderStatus = orderStatus;
+    }
+
     public Order() {
 
     }

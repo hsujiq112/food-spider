@@ -30,7 +30,7 @@ public class MailService {
      */
     public void sendMail(AddOrderRequest request,
                           Customer user,
-                          Restaurant restaurant) throws Exception {
+                          Restaurant restaurant) throws MessagingException {
         var properties = new Properties();
         properties.put("mail.smtp.host", "smtp.mailtrap.io");
         properties.put("mail.smtp.port", "465");
@@ -62,7 +62,7 @@ public class MailService {
     private MimeMessage createMailContents(AddOrderRequest request,
                                       Session session,
                                       Customer user,
-                                      Restaurant restaurant) throws Exception {
+                                      Restaurant restaurant) throws MessagingException {
         var ref = new Object() {
             String msg = "<h1>Hey! Gimme your food now!</h1>" +
                     "<br>" +

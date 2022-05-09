@@ -5,21 +5,15 @@ import com.foodspider.model.FoodItem;
 import com.foodspider.model.Restaurant;
 import com.foodspider.model.narrowed_model.NarrowedRestaurant;
 import com.foodspider.validator.FoodValidator;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.hibernate.Hibernate;
 
-import java.io.ByteArrayOutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.UUID;
 
 /**
  * The type Restaurant service.
  */
 public class RestaurantService extends ServiceBase<Restaurant> {
-
-
 
     public ArrayList<Restaurant> dbSet() {
         return new ArrayList<>(getRepo().findAll());

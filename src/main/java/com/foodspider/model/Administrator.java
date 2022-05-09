@@ -16,7 +16,11 @@ public class Administrator extends UserBase {
     @OneToOne(mappedBy = "administrator", cascade = CascadeType.ALL)
     private Restaurant restaurant;
 
-    public Administrator(String emailAddress, String firstName, String lastName, String username, String password) throws Exception {
+    public Administrator(String emailAddress,
+                         String firstName,
+                         String lastName,
+                         String username,
+                         String password) throws Exception {
         super(emailAddress, firstName, lastName, username, password);
     }
 

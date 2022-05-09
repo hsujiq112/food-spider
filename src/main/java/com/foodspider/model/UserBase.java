@@ -26,7 +26,11 @@ public class UserBase extends BaseModel {
     @Column(nullable = false)
     private String password;
 
-    public UserBase(String emailAddress, String firstName, String lastName, String username, String password) throws Exception {
+    public UserBase(String emailAddress,
+                    String firstName,
+                    String lastName,
+                    String username,
+                    String password) throws Exception {
         this.setId(UUID.randomUUID());
         this.emailAddress = emailAddress;
         this.firstName = firstName;

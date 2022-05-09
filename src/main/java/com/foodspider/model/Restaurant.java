@@ -38,7 +38,10 @@ public class Restaurant extends BaseModel {
     @OneToMany(mappedBy = "restaurant")
     private List<Order> orders;
 
-    public Restaurant(String name, String location, String deliveryZones, List<Integer> categories) {
+    public Restaurant(String name,
+                      String location,
+                      String deliveryZones,
+                      List<Integer> categories) {
         this.setId(UUID.randomUUID());
         this.name = name;
         this.location = location;

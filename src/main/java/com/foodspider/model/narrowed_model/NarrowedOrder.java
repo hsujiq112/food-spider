@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class NarrowedOrder {
-
     public UUID id;
     public List<NarrowedFoodItem> foodItems;
     public OrderStatusEnum status;
