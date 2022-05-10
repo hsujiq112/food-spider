@@ -85,7 +85,15 @@ class RestaurantServiceTest {
         } catch (Exception ex) {
             fail();
         }
+    }
 
+    @Test
+    void getNarrowedRestaurants() {
+        setup();
+        var narrowedRestaurantsUnfiltered = restaurantService.getNarrowedRestaurants(null);
+        assertEquals(restaurants.size(), narrowedRestaurantsUnfiltered.size());
+        var narrowedRestaurantsFiltered = restaurantService.getNarrowedRestaurants("filter");
+        assertEquals(3, narrowedRestaurantsFiltered.size());
     }
 
     private void createInvalidFoodItems() {
@@ -127,6 +135,24 @@ class RestaurantServiceTest {
     }
 
     private void createAndMapRestaurants() {
-
+        var categories = new ArrayList<Integer>(){{
+            add(1);
+            add(2);
+            add(3);
+            add(4);
+        }};
+        restaurants = new ArrayList<>(){{
+            add(new Restaurant(UUID.fromString("134e0875-10e1-478b-94e8-062bcab0b38f"),
+                    "testNameFilter", "testLocation", "test,delivery,zones", categories));
+            add(new Restaurant(UUID.fromString("1a120233-6c39-48f2-a928-e813ef906482"),"testName2Filter",
+                    "testLocation2", "test,delivery,zones2", categories.subList(0, 0)));
+            add(new Restaurant(UUID.fromString("1db3ab9d-822a-486b-8987-3fb43b38ea86"),"testName3",
+                    "testLocation3", "test,delivery,zones3", categories.subList(0, 1)));
+            add(new Restaurant(UUID.fromString("88cb4ac4-68c6-4338-a635-bb3453f7507d"), "testName4",
+                    "testLocation4", "test,delivery,zones4", categories.subList(0, 2)));
+            add(new Restaurant(UUID.fromString("e7dde5b4-1b40-4b2e-9c1b-f908dd8505f6"), "testName5Filter",
+                    "testLocation5", "test,delivery,zones5", categories.subList(0, 3)));
+        }};
+        when(restaurantRepository.findAll()).thenReturn(restaurants);
     }
 }

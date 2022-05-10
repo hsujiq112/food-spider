@@ -1,6 +1,7 @@
 package com.foodspider.service;
 
 import com.foodspider.model.Restaurant;
+import lombok.Setter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -18,6 +19,7 @@ import java.util.UUID;
  */
 public class PDFService {
 
+    @Setter
     @Autowired
     private RestaurantService restaurantService;
 

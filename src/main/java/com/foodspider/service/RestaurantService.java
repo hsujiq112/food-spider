@@ -15,10 +15,6 @@ import java.util.UUID;
  */
 public class RestaurantService extends ServiceBase<Restaurant> {
 
-    public ArrayList<Restaurant> dbSet() {
-        return new ArrayList<>(getRepo().findAll());
-    }
-
     /**
      * Gets food items by restaurant id.
      *
