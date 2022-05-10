@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 public class Customer extends UserBase {
 
+    @Setter
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     List<Order> orders;
 

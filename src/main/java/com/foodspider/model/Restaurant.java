@@ -32,9 +32,11 @@ public class Restaurant extends BaseModel {
     @JoinColumn(name = "administratorID")
     private Administrator administrator;
 
+    @Setter
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<FoodItem> foodItems;
 
+    @Setter
     @OneToMany(mappedBy = "restaurant")
     private List<Order> orders;
 

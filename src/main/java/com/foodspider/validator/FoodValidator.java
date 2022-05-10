@@ -28,11 +28,11 @@ public class FoodValidator {
             throw new InvalidFoodItemException("Invalid category");
         }
         var pattern = Pattern.compile("(https?:\\/\\/)?([\\w\\-])+\\.([a-zA-Z]{2,63})([\\/\\w-]*)*\\/?\\??([^#\\n\\r]*)?#?([^\\n\\r]*)");
-        if (!pattern.matcher(imageLink).matches()) {
-            throw new InvalidFoodItemException("Invalid image link URL");
-        }
         if (imageLink.equals("")) {
             throw new InvalidFoodItemException("Empty image link... c'mon... get a Shutterstock image of the food");
+        }
+        if (!pattern.matcher(imageLink).matches()) {
+            throw new InvalidFoodItemException("Invalid image link URL");
         }
         if (imageLink.length() > 256) {
             throw new InvalidFoodItemException("Image Link too long... find a shorter image URL lol");
